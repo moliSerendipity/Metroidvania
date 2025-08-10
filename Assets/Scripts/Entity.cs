@@ -10,6 +10,7 @@ public class Entity : MonoBehaviour
     public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
     public EntityStats stats { get; private set; }
+    public CapsuleCollider2D cd { get; private set; }
     #endregion
 
     [Header("Knockback info")]
@@ -42,6 +43,7 @@ public class Entity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         stats = GetComponent<EntityStats>();
+        cd = GetComponent<CapsuleCollider2D>();
     }
 
     protected virtual void Update()
@@ -49,6 +51,7 @@ public class Entity : MonoBehaviour
 
     }
 
+    // 伤害效果
     public virtual void DamageEffect()
     {
         fx.StartCoroutine("FlashFX");
@@ -56,6 +59,7 @@ public class Entity : MonoBehaviour
         Debug.Log(gameObject.name + " is damaged");
     }
 
+    // 被击退效果
     protected virtual IEnumerator HitKnockback()
     {
         isKnocked = true;
@@ -123,5 +127,11 @@ public class Entity : MonoBehaviour
             sr.color = Color.clear;
         else
             sr.color = Color.white;
+    }
+
+    // 死亡
+    public virtual void Die()
+    {
+
     }
 }

@@ -34,6 +34,7 @@ public class EnemyState
     public virtual void Exit()
     {
         enemyBase.anim.SetBool(animBoolName, false);                            // 设置动画布尔值为假，停止动画
+        enemyBase.AssignLastAnimName(animBoolName);                             // 记录当前动画名称
     }
 
     public virtual void AnimationFinishTrigger()

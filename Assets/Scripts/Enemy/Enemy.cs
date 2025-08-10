@@ -26,6 +26,7 @@ public class Enemy : Entity
     [HideInInspector] public float lastTimeAttacked;                                // 上次攻击结束时间
 
     public EnemyStateMachine stateMachine { get; private set; }
+    public string lastAnimBoolName { get; private set; }                            // 上次动画布尔参数名
 
     protected override void Awake()
     {
@@ -101,6 +102,12 @@ public class Enemy : Entity
 
     // 动画结束触发的事件
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
+
+    // 记录当前动画参数名
+    public virtual void AssignLastAnimName(string _animBoolName)
+    {
+        lastAnimBoolName = _animBoolName;
+    }
 
     // 检测玩家
     public virtual RaycastHit2D IsPlayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50f, whatIsPlayer);

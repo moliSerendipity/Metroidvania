@@ -47,9 +47,9 @@ public class SkeletonBattleState : EnemyState
         }
 
         // 朝着玩家方向移动
-        if (player.position.x > enemy.transform.position.x)
+        if (player.position.x > enemy.transform.position.x + 0.1f)
             moveDir = 1;
-        else
+        else if (player.position.x < enemy.transform.position.x - 0.1f)
             moveDir = -1;
         enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
     }

@@ -13,10 +13,18 @@ public class EnemyStats : EntityStats
         enemy = GetComponent<Enemy>();
     }
 
-    public override void TakeDamage(int _damage)
+    // 受伤，显示受伤效果
+    public override void TakeDamage(float _damage)
     {
         base.TakeDamage(_damage);
 
-        enemy.DamageEffect();
+        enemy.DamageEffect();                                                       // 显示受伤效果
+    }
+
+    // 死亡，进入死亡状态
+    protected override void Die()
+    {
+        base.Die();
+        enemy.Die();                                                                // 进入死亡状态
     }
 }
