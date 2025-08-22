@@ -25,7 +25,7 @@ public class SkeletonStunnedState : EnemyState
     {
         base.Exit();
 
-        enemy.fx.Invoke("CancelRedBlink", 0);                                       // 取消闪烁并变回原来的颜色
+        enemy.fx.Invoke("CancelColorChange", 0);                                    // 取消闪烁并变回原来的颜色
     }
 
     public override void Update()

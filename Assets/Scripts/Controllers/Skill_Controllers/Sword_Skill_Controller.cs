@@ -79,7 +79,7 @@ public class Sword_Skill_Controller : MonoBehaviour
     private void SwordSkillDamage(Enemy enemy)
     {
         if (enemy == null) return;
-        enemy.DamageEffect();                                                     // 敌人碰到剑会受到伤害
+        player.stats.DoDamage(enemy.GetComponent<EntityStats>());           // 敌人碰到剑会受到伤害
         enemy.StartCoroutine("FreezeTimeFor", freezeTimeDuration);          // 冻结敌人的时间持续几秒
     }
 

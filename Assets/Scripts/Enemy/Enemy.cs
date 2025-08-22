@@ -49,6 +49,21 @@ public class Enemy : Entity
         stateMachine.currentState.Update();                                         // 更新当前状态
     }
 
+    public override void SlowEntityBy(float _slowPercentage, float _slowDuration)
+    {
+        moveSpeed = moveSpeed * (1 - _slowPercentage);
+        anim.speed = anim.speed * (1 - _slowPercentage);
+
+        Invoke("ReturnDefaultSpeed", _slowDuration);
+    }
+
+    protected override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+
+        moveSpeed = defaultMoveSpeed;
+    }
+
     // 是否冻结敌人的时间，让其移动速度和动画播放速度都为0
     public virtual void FreezeTime(bool _timeFrozen)
     {

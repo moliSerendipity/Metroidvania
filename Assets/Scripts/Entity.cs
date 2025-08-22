@@ -14,29 +14,26 @@ public class Entity : MonoBehaviour
     #endregion
 
     [Header("Knockback info")]
-    [SerializeField] protected Vector2 knockbackDirection;                        // 击退方向
-    [SerializeField] protected float knockbackDuration;                           // 击退持续时间
-    protected bool isKnocked;                                                     // 是否被击退
+    [SerializeField] protected Vector2 knockbackDirection;                          // 击退方向
+    [SerializeField] protected float knockbackDuration;                             // 击退持续时间
+    protected bool isKnocked;                                                       // 是否被击退
 
     [Header("Collision info")]
-    public Transform attackCheck;                                                 // 攻击检测范围
-    public float attackCheckRadius;                                               // 攻击检测范围半径
-    [SerializeField] protected Transform groundCheck;                             // 地面检测点
-    [SerializeField] protected float groundCheckDistance;                         // 地面检测距离
-    [SerializeField] protected Transform wallCheck;                               // 墙面检测点
-    [SerializeField] protected float wallCheckDistance;                           // 墙面检测距离
-    [SerializeField] protected LayerMask whatIsGround;                            // 地面图层
+    public Transform attackCheck;                                                   // 攻击检测范围
+    public float attackCheckRadius;                                                 // 攻击检测范围半径
+    [SerializeField] protected Transform groundCheck;                               // 地面检测点
+    [SerializeField] protected float groundCheckDistance;                           // 地面检测距离
+    [SerializeField] protected Transform wallCheck;                                 // 墙面检测点
+    [SerializeField] protected float wallCheckDistance;                             // 墙面检测距离
+    [SerializeField] protected LayerMask whatIsGround;                              // 地面图层
 
-    public int facingDir { get; private set; } = 1;
+    public int facingDir { get; private set; } = 1;                                 // 朝向
     protected bool facingRight = true;
+
+    public System.Action onFlipped;                                                 // 翻转事件
 
 
     protected virtual void Awake()
-    {
-
-    }
-
-    protected virtual void Start()
     {
         fx = GetComponent<EntityFX>();
         anim = GetComponentInChildren<Animator>();
@@ -46,15 +43,18 @@ public class Entity : MonoBehaviour
         cd = GetComponent<CapsuleCollider2D>();
     }
 
+    protected virtual void Start()
+    {
+    }
+
     protected virtual void Update()
     {
 
     }
 
     // 伤害效果
-    public virtual void DamageEffect()
+    public virtual void DamageImpact()
     {
-        fx.StartCoroutine("FlashFX");
         StartCoroutine(HitKnockback());
         Debug.Log(gameObject.name + " is damaged");
     }
@@ -108,6 +108,8 @@ public class Entity : MonoBehaviour
         facingDir = -facingDir;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
+
+        onFlipped?.Invoke();                                                        // 翻转事件
     }
 
     // 翻转控制器（朝向与输入相反就翻转）
@@ -120,13 +122,16 @@ public class Entity : MonoBehaviour
     }
     #endregion
 
-    // 是否透明
-    public void MakeTransparent(bool _transparent)
+    
+
+    public virtual void SlowEntityBy(float _slowPercentage, float _slowDuration)
     {
-        if (_transparent)
-            sr.color = Color.clear;
-        else
-            sr.color = Color.white;
+
+    }
+
+    protected virtual void ReturnDefaultSpeed()
+    {
+        anim.speed = 1;
     }
 
     // 死亡

@@ -34,7 +34,7 @@ public class PlayerBlackholeState : PlayerState
 
         // 恢复默认重力，取消玩家透明效果
         rb.gravityScale = defaultGravity;
-        player.MakeTransparent(false);
+        player.fx.MakeTransparent(false);
     }
 
     public override void Update()

@@ -92,7 +92,7 @@ public class Blackhole_Skill_Controller : MonoBehaviour
 
         if(playerCanDisappear)
         {
-            PlayerManager.instance.player.MakeTransparent(true);                    // 玩家变为透明状态（进入黑洞影分身攻击阶段）
+            PlayerManager.instance.player.fx.MakeTransparent(true);                 // 玩家变为透明状态（进入黑洞影分身攻击阶段）
             playerCanDisappear = false;
         }
     }

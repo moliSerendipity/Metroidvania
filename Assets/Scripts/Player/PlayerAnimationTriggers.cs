@@ -44,7 +44,7 @@ public class PlayerAnimationTriggers : MonoBehaviour
             // 如果碰撞体上挂有Enemy脚本，让Enemy受伤
             if (hit.GetComponent<Enemy>())
             {
-                player.stats.DoDamage(hit.GetComponent<EntityStats>());
+                player.stats.DoMagicDamage(hit.GetComponent<EntityStats>());
             }
         }
     }

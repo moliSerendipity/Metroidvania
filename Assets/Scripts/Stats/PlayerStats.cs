@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : EntityStats
+public class PlayerStats : EntityStats
 {
-    private Enemy enemy;
+    private Player player;
 
     protected override void Start()
     {
         base.Start();
 
-        enemy = GetComponent<Enemy>();
+        player = GetComponent<Player>();
     }
 
     // 受伤，显示受伤效果
@@ -18,13 +18,14 @@ public class EnemyStats : EntityStats
     {
         base.TakeDamage(_damage);
 
-        enemy.DamageEffect();                                                       // 显示受伤效果
+        //player.DamageEffect();                                                      // 显示受伤效果
     }
 
     // 死亡，进入死亡状态
     protected override void Die()
     {
         base.Die();
-        enemy.Die();                                                                // 进入死亡状态
+
+        player.Die();                                                               // 进入死亡状态
     }
 }

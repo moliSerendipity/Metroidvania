@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Clone_Skill_Controller : MonoBehaviour
 {
+    private Player player;
     private SpriteRenderer sr;
     private Animator anim;
     [SerializeField] private float colorLossSpeed;                                  // 克隆残影颜色衰减速度
@@ -65,10 +66,10 @@ public class Clone_Skill_Controller : MonoBehaviour
         // 遍历所有碰撞体
         foreach (Collider2D hit in colliders)
         {
-            // 如果碰撞体上挂有Enemy脚本，调用Enemy脚本的Damage函数，如果可以克隆残影，则有一定概率克隆残影
+            // 如果碰撞体上挂有Enemy脚本，让Enemy受伤，如果可以克隆残影，则有一定概率克隆残影
             if (hit.GetComponent<Enemy>())
             {
-                hit.GetComponent<Enemy>().DamageEffect();
+                player.stats.DoDamage(hit.GetComponent<EntityStats>());
 
                 if (canDuplicateClone)
                 {
@@ -80,7 +81,7 @@ public class Clone_Skill_Controller : MonoBehaviour
     }
 
     // 进行克隆体的设置
-    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicateClone, float _chanceToDuplicate)
+    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicateClone, float _chanceToDuplicate, Player _player)
     {
         if (_canAttack)
             anim.SetInteger("AttackNumber", Random.Range(1,4));                     // 随机选择攻击动画
@@ -90,6 +91,7 @@ public class Clone_Skill_Controller : MonoBehaviour
         closestEnemy = _closestEnemy;                                               // 设置最近敌人
         canDuplicateClone = _canDuplicateClone;                                     // 设置是否可以克隆残影
         chanceToDuplicate = _chanceToDuplicate;                                     // 设置克隆残影概率
+        player = _player;
 
         FaceClosestTarget();                                                        // 面向最近的敌人
     }

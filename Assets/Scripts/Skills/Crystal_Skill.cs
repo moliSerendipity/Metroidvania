@@ -63,7 +63,7 @@ public class Crystal_Skill : Skill
     {
         currentCrystal = Instantiate(crystalPrefab, player.transform.position, Quaternion.identity);
         currentCrystalScript = currentCrystal.GetComponent<Crystal_Skill_Controller>();
-        currentCrystalScript.SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, FindClosestEnemy(currentCrystal.transform));
+        currentCrystalScript.SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, FindClosestEnemy(currentCrystal.transform), player);
     }
 
     // 选择随机敌人
@@ -85,7 +85,7 @@ public class Crystal_Skill : Skill
                 GameObject crystalToSpawn = crystalList[crystalList.Count - 1];
                 GameObject newCrystal = Instantiate(crystalToSpawn, player.transform.position, Quaternion.identity);
                 newCrystal.GetComponent<Crystal_Skill_Controller>().
-                    SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, FindClosestEnemy(newCrystal.transform));
+                    SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, FindClosestEnemy(newCrystal.transform), player);
                 crystalList.Remove(crystalToSpawn);
 
                 // 如果移除后水晶列表为空，则重置冷却时间并重新填充水晶列表

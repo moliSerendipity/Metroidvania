@@ -15,11 +15,14 @@ public class Player : Entity
     public float moveSpeed = 8f;
     public float jumpForce = 12f;
     public float swordReturnImpact;                                             // 抓住剑时的冲击力大小
+    private float defaultMoveSpeed;
+    private float defaultJumpForce;
 
     [Header("Dash info")]
     public float dashSpeed;
     public float dashDuration;                                                  // 冲刺持续时间
     public float dashDir { get; private set; }                                  // 冲刺方向
+    private float defaultDashSpeed;
 
     public SkillManager skill { get; private set; }                             // 技能管理器
     public GameObject sword { get; private set; }                               // 游戏物体，剑
@@ -67,6 +70,10 @@ public class Player : Entity
 
         skill = SkillManager.instance;                                          // 获取技能管理器
         stateMachine.Initialize(idleState);                                     // 初始化状态机，进入初始状态
+
+        defaultMoveSpeed = moveSpeed;
+        defaultJumpForce = jumpForce;
+        defaultDashSpeed = dashSpeed;
     }
 
     
@@ -130,6 +137,25 @@ public class Player : Entity
                 dashDir = facingDir;
             stateMachine.ChangeState(dashState);                                // 切换到冲刺状态
         }
+    }
+
+    public override void SlowEntityBy(float _slowPercentage, float _slowDuration)
+    {
+        moveSpeed = moveSpeed * (1 - _slowPercentage);
+        jumpForce = jumpForce * (1 - _slowPercentage);
+        dashSpeed = dashSpeed * (1 - _slowPercentage);
+        anim.speed = anim.speed * (1 - _slowPercentage);
+
+        Invoke("ReturnDefaultSpeed", _slowDuration);
+    }
+
+    protected override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+
+        moveSpeed = defaultMoveSpeed;
+        jumpForce = defaultJumpForce;
+        dashSpeed = defaultDashSpeed;
     }
 
     // 死亡，进入死亡状态
