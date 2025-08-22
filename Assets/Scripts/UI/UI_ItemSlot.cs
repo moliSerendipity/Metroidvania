@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class UI_ItemSlot : MonoBehaviour
+public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private Image itemImage;                                   // 槽位里显示的图片（物品图标）
     [SerializeField] private TextMeshProUGUI itemText;                          // 槽位右下角的文字（物品数量）
@@ -33,5 +34,21 @@ public class UI_ItemSlot : MonoBehaviour
             itemImage.sprite = null;                                            // 清空图标
             itemText.text = "";                                                 // 清空数量
         }
+    }
+
+    // 手动清空格子
+    public void CleanUpSlot()
+    {
+        item = null;
+        itemImage.sprite = null;
+        itemImage.color = Color.clear;
+        itemText.text = "";
+    }
+
+    // 点击格子时触发逻辑（装备物品）
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (item != null && item.data.itemType == ItemType.Equipment)
+            Inventory.instance.EquipItem(item.data);
     }
 }
