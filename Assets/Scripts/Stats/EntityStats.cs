@@ -55,11 +55,12 @@ public class EntityStats : MonoBehaviour
 
     private void Awake()
     {
-        fx = GetComponent<EntityFX>();
     }
 
     protected virtual void Start()
     {
+        fx = GetComponent<EntityFX>();
+
         critDamage.SetDefaultValue(1.5f);
         currentHealth = GetMaxHealthValue();
     }

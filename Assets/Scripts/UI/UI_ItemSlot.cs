@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
 {
-    [SerializeField] private Image itemImage;                                   // 槽位里显示的图片（物品图标）
+    [SerializeField] protected Image itemImage;                                 // 槽位里显示的图片（物品图标）
     [SerializeField] private TextMeshProUGUI itemText;                          // 槽位右下角的文字（物品数量）
 
     public InventoryItem item;                                                  // 当前槽位绑定的物品（可能为空）
@@ -46,7 +46,7 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
     }
 
     // 点击格子时触发逻辑（装备物品）
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
         if (item != null && item.data.itemType == ItemType.Equipment)
             Inventory.instance.EquipItem(item.data);
