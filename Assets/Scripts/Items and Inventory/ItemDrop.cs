@@ -10,10 +10,9 @@ public class ItemDrop : MonoBehaviour
     private List<ItemData> dropList = new List<ItemData>();                         // 本次实际可掉落的物品池
 
     [SerializeField] private GameObject dropPrefab;                                 // 掉落物体的预制体（ItemObject）
-    //[SerializeField] private ItemData item;
 
     // 生成掉落
-    public void GenerateDrop()
+    public virtual void GenerateDrop()
     {
         // 遍历掉落表，按概率决定是否进入候选列表
         for (int i = 0;  i < possibleDrop.Length; i++)
@@ -36,7 +35,7 @@ public class ItemDrop : MonoBehaviour
     }
 
     // 实际生成掉落物体
-    public void DropItem(ItemData _itemData)
+    protected void DropItem(ItemData _itemData)
     {
         // 实例化物体
         GameObject newDrop = Instantiate(dropPrefab, transform.position, Quaternion.identity);

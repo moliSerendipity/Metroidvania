@@ -8,9 +8,12 @@ public class ItemObject_Trigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 玩家碰到物体时拾取
+        // 玩家未死亡碰到物体时拾取
         if (collision.GetComponent<Player>())
         {
+            if (collision.GetComponent<PlayerStats>().isDead)
+                return;
+
             myItemObject.PickUpItem();
         }
     }

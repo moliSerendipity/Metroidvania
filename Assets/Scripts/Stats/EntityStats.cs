@@ -51,7 +51,7 @@ public class EntityStats : MonoBehaviour
     public float currentHealth;                                                     // 当前生命值
 
     public System.Action onHealthChanged;                                           // 
-    protected bool isDead;
+    public bool isDead { get; private set; }
 
     private void Awake()
     {

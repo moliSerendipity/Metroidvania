@@ -45,9 +45,17 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
         itemText.text = "";
     }
 
-    // 点击格子时触发逻辑（装备物品）
+    // 点击格子时触发逻辑
     public virtual void OnPointerDown(PointerEventData eventData)
     {
+        // 按住 LeftControl 丢弃物品
+        if (item != null && Input.GetKey(KeyCode.LeftControl))
+        {
+            Inventory.instance.RemoveItem(item.data);
+            return;
+        }
+
+        // 装备物品
         if (item != null && item.data.itemType == ItemType.Equipment)
             Inventory.instance.EquipItem(item.data);
     }

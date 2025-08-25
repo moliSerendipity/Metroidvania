@@ -27,5 +27,6 @@ public class PlayerStats : EntityStats
         base.Die();
 
         player.Die();                                                               // 进入死亡状态
+        GetComponent<PlayerItemDrop>()?.GenerateDrop();                             // 掉落物品
     }
 }

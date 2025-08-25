@@ -2844,12 +2844,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15739ccfcc943d41a4f2d5a31364c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingItems:
+  - {fileID: 11400000, guid: d04d4eae51880564cbe307f62d6d4cad, type: 2}
+  - {fileID: 11400000, guid: 4bb6b85c10425734dbcf79d26af0c008, type: 2}
+  - {fileID: 11400000, guid: 784b01baacec383488c08151b1ee2307, type: 2}
+  - {fileID: 11400000, guid: 71c9333802037be48ac8ee950cd506da, type: 2}
+  - {fileID: 11400000, guid: 428cb845c632ed04283c4221e25b72c2, type: 2}
+  - {fileID: 11400000, guid: d04d4eae51880564cbe307f62d6d4cad, type: 2}
   equipment: []
   inventory: []
   stash: []
   inventorySlotParent: {fileID: 2001550671}
   stashSlotParent: {fileID: 744599628}
   equipmentSlotParent: {fileID: 232459372}
+  inventoryItemSlot: []
+  stashItemSlot: []
+  equipmentSlot: []
 --- !u!1001 &935090845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -132817,6 +132827,7 @@ GameObject:
   - component: {fileID: 1147335428}
   - component: {fileID: 1147335430}
   - component: {fileID: 1147335431}
+  - component: {fileID: 1147335432}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -132991,7 +133002,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   maxHealth:
-    baseValue: 100
+    baseValue: 10
     modifiers: []
   armor:
     baseValue: 0
@@ -133017,6 +133028,22 @@ MonoBehaviour:
   shockStrikePrefab: {fileID: 8317384450635469786, guid: fb71cde67348e4246a1469f268aab1b1, type: 3}
   ailmentDuration: 4
   currentHealth: 0
+--- !u!114 &1147335432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147335425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58023cff5dc3cbc4089e91910b4f30f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amountOfPossibleDropItems: 0
+  possibleDrop: []
+  dropPrefab: {fileID: 6179378265483203817, guid: cb86c60bb2289a342830b8cf603c104c, type: 3}
+  chanceToLoseItems: 50
 --- !u!1001 &1172765644
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138539,7 +138566,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   damage:
-    baseValue: 5
+    baseValue: 10
     modifiers: []
   critChance:
     baseValue: 0

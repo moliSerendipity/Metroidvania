@@ -7,13 +7,15 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory instance;                                               // 单例，方便全局调用
 
-    public List<InventoryItem> equipment;                                           // 已装备物品列表
+    public List<ItemData> startingItems;
+
+    [SerializeField] private List<InventoryItem> equipment;                         // 已装备物品列表
     public Dictionary<ItemData_Equipment, InventoryItem> equipmentDictionary;       // 装备字典（按类型快速查找）
 
-    public List<InventoryItem> inventory;                                           // 背包物品列表
+    [SerializeField] private List<InventoryItem> inventory;                         // 背包物品列表
     public Dictionary<ItemData, InventoryItem> inventoryDictionary;                 // 快速查找（Key = ItemData）
 
-    public List<InventoryItem> stash;                                               // 仓库物品列表
+    [SerializeField] private List<InventoryItem> stash;                             // 仓库物品列表
     public Dictionary <ItemData, InventoryItem> stashDictionary;                    // 仓库字典
 
     [Header("Inventory UI")]
@@ -21,9 +23,9 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Transform stashSlotParent;                             // 仓库 UI 槽位父物体
     [SerializeField] private Transform equipmentSlotParent;                         // 装备 UI 槽位父物体
 
-    private UI_ItemSlot[] inventoryItemSlot;                                        // 背包槽位
-    private UI_ItemSlot[] stashItemSlot;                                            // 仓库槽位
-    private UI_EquipmentSlot[] equipmentSlot;                                       // 装备槽位
+    public UI_ItemSlot[] inventoryItemSlot;                                         // 背包槽位
+    public UI_ItemSlot[] stashItemSlot;                                             // 仓库槽位
+    public UI_EquipmentSlot[] equipmentSlot;                                        // 装备槽位
 
     private void Awake()
     {
@@ -50,6 +52,13 @@ public class Inventory : MonoBehaviour
         inventoryItemSlot = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashItemSlot = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
+        AddStartingItems();
+    }
+
+    private void AddStartingItems()
+    {
+        for (int i = 0; i < startingItems.Count; i++)
+            AddItem(startingItems[i]);
     }
 
     // 装备物品逻辑
@@ -109,14 +118,31 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < stash.Count; i++)
             stashItemSlot[i].UpdateSlot(stash[i]);
 
+        UpdateEquipmentSlotUI();                                                    // 更新装备栏 UI 槽位显示
+    }
+
+    // 更新装备栏 UI 槽位显示
+    public void UpdateEquipmentSlotUI()
+    {
+        bool equipmentExist =false;                                                 // 槽中是否有装备
+
         // 装备槽位根据类型填充
         for (int i = 0; i < equipmentSlot.Length; i++)
         {
+            equipmentExist = false;
             foreach (KeyValuePair<ItemData_Equipment, InventoryItem> item in equipmentDictionary)
             {
                 if (equipmentSlot[i].slotType == item.Key.equipmentType)
+                {
+                    equipmentExist = true;
                     equipmentSlot[i].UpdateSlot(item.Value);
+                    break;
+                }
             }
+
+            // 槽中没有装备，则清空 UI
+            if (!equipmentExist)
+                equipmentSlot[i].UpdateSlot(null);
         }
     }
 
@@ -234,4 +260,10 @@ public class Inventory : MonoBehaviour
         Debug.Log("Here is your item " +  _itemToCraft.name);
         return true;                                                                // 制造成功
     }
+
+    // 获取装备列表
+    public List<InventoryItem> GetEquipmentList() => equipment;
+
+    // 获取仓库列表
+    public List<InventoryItem> GetStashList() => stash;
 }
