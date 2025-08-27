@@ -11,10 +11,12 @@ public enum EquipmentType
     Flask                                                                           // 药水瓶
 }
 
+// 装备数据（继承自 ItemData）
 [CreateAssetMenu(fileName = "New Item Data", menuName = "Data/Equipment")]
 public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;                                             // 装备类型
+    public ItemEffect[] itemEffects;                                                // 装备附带的效果
 
     [Header("Major stats")]
     public float strength;
@@ -23,14 +25,14 @@ public class ItemData_Equipment : ItemData
     public float vitality;
 
     [Header("Offensive stats")]
-    public float damage;                                                             // 攻击力
-    public float critChance;                                                         // 暴击率
-    public float critDamage;                                                         // 暴击伤害
+    public float damage;                                                            // 攻击力
+    public float critChance;                                                        // 暴击率
+    public float critDamage;                                                        // 暴击伤害
 
     [Header("Defensive stats")]
-    public float health;                                                          // 最大生命值
-    public float armor;                                                              // 护甲值
-    public float evasion;                                                            // 闪避率
+    public float health;                                                            // 最大生命值
+    public float armor;                                                             // 护甲值
+    public float evasion;                                                           // 闪避率
     public float magicResistance;
 
     [Header("Magic stats")]
@@ -39,8 +41,18 @@ public class ItemData_Equipment : ItemData
     public float lightningDamage;
 
     [Header("Craft requirements")]
-    public List<InventoryItem> craftingMaterials;
+    public List<InventoryItem> craftingMaterials;                                   // 合成所需材料
 
+    // 执行装备绑定的所有效果
+    public void Effect(Transform _enemyPosition)
+    {
+        foreach (ItemEffect item in itemEffects)
+        {
+            item.ExecuteEffect(_enemyPosition);
+        }
+    }
+
+    // 穿戴装备时，把装备属性加到玩家属性上
     public void AddModifiers()
     {
         PlayerStats playerStats = PlayerManager.instance.player.GetComponent<PlayerStats>();
@@ -64,6 +76,7 @@ public class ItemData_Equipment : ItemData
         playerStats.lightningDamage.AddModifier(lightningDamage);
     }
 
+    // 卸下装备时，把装备属性从玩家属性中移除
     public void RemoveModifiers()
     {
         PlayerStats playerStats = PlayerManager.instance.player.GetComponent<PlayerStats>();

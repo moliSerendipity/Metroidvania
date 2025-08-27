@@ -41,10 +41,13 @@ public class PlayerAnimationTriggers : MonoBehaviour
         // 遍历所有碰撞体
         foreach(Collider2D hit in colliders)
         {
-            // 如果碰撞体上挂有Enemy脚本，让Enemy受伤
+            // 如果碰撞体上挂有Enemy脚本，让Enemy受伤，并触发武器的效果
             if (hit.GetComponent<Enemy>())
             {
-                player.stats.DoMagicDamage(hit.GetComponent<EntityStats>());
+                EnemyStats _target = hit.GetComponent<EnemyStats>();
+                player.stats.DoMagicDamage(_target);
+
+                Inventory.instance.GetEquipment(EquipmentType.Weapon)?.Effect(_target.transform);
             }
         }
     }

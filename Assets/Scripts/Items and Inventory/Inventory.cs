@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 // 背包管理类（单例）
 public class Inventory : MonoBehaviour
@@ -52,9 +53,11 @@ public class Inventory : MonoBehaviour
         inventoryItemSlot = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashItemSlot = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
+
         AddStartingItems();
     }
 
+    // 添加初始物品
     private void AddStartingItems()
     {
         for (int i = 0; i < startingItems.Count; i++)
@@ -89,7 +92,6 @@ public class Inventory : MonoBehaviour
         newEquipment.AddModifiers();                                                // 装备后增加角色数值
 
         RemoveItem(_item);                                                          // 从背包移除刚装备的物品
-        //UpdateSlotUI();
     }
 
     // 卸下装备
@@ -266,4 +268,15 @@ public class Inventory : MonoBehaviour
 
     // 获取仓库列表
     public List<InventoryItem> GetStashList() => stash;
+
+    /// <summary>
+    /// 根据装备类型（_type）查找当前装备的物品
+    /// </summary>
+    /// <param name="_type">要查找的装备类型</param>
+    /// <returns>
+    /// 如果找到了对应类型的装备，返回它的 ItemData_Equipment；
+    /// 否则返回 null
+    /// </returns>
+    public ItemData_Equipment GetEquipment(EquipmentType _type) 
+        => equipmentDictionary.Keys.FirstOrDefault(item => item.equipmentType == _type);
 }
