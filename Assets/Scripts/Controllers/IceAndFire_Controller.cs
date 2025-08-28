@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class IceAndFire_Controller : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    // 触发检测到敌人时，对敌人造成一次魔法伤害
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (collision.GetComponent<Enemy>())
+        {
+            PlayerStats playerStats = PlayerManager.instance.player.GetComponent<PlayerStats>();
+            EnemyStats enemyTarget = collision.GetComponent<EnemyStats>();
+            playerStats.DoMagicDamage(enemyTarget);
+        }
     }
 }

@@ -79,14 +79,18 @@ public class Crystal_Skill_Controller : MonoBehaviour
     // 销毁水晶自身
     public void SelfDestroy() => Destroy(gameObject);
 
-    // 当水晶爆炸时，检测范围内的敌人并造成伤害
+    // 当水晶爆炸时，检测范围内的敌人，造成伤害，产生装备效果
     public void AnimationExplodeEvent()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, cd.radius * transform.localScale.x);
         foreach(Collider2D hit in colliders)
         {
             if (hit.GetComponent<Enemy>())
+            {
                 player.stats.DoMagicDamage(hit.GetComponent<EntityStats>());
+                // 产生 Amulet 的效果
+                Inventory.instance.GetEquipment(EquipmentType.Amulet)?.Effect(hit.transform);
+            }
         }
     }
 }

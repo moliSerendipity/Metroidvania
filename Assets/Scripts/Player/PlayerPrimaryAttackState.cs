@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerPrimaryAttackState : PlayerGroundedState
 {
-    private int comboCounter;
-    private float lastTimeAttacked;
-    private float comboWindow = 2f;
+    public int comboCounter { get; private set; }                               // 连击数
+    private float lastTimeAttacked;                                             // 上次攻击结束时间
+    private float comboWindow = 2f;                                             // 连击最大时间间隔
     public PlayerPrimaryAttackState(Player __player, PlayerStateMachine __stateMachine, string _animBoolName) : base(__player, __stateMachine, _animBoolName)
     {
     }

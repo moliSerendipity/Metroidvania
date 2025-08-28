@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Sword_Skill_Controller : MonoBehaviour
@@ -81,6 +82,8 @@ public class Sword_Skill_Controller : MonoBehaviour
         if (enemy == null) return;
         player.stats.DoDamage(enemy.GetComponent<EntityStats>());           // 敌人碰到剑会受到伤害
         enemy.StartCoroutine("FreezeTimeFor", freezeTimeDuration);          // 冻结敌人的时间持续几秒
+        // 产生 Amulet 的效果
+        Inventory.instance.GetEquipment(EquipmentType.Amulet)?.Effect(enemy.transform);
     }
 
     // 弹射剑的运行逻辑
