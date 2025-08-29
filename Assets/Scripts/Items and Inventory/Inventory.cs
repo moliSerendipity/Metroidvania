@@ -28,6 +28,10 @@ public class Inventory : MonoBehaviour
     public UI_ItemSlot[] stashItemSlot;                                             // 仓库槽位
     public UI_EquipmentSlot[] equipmentSlot;                                        // 装备槽位
 
+    [Header("Items cooldown")]
+    private float lastTimeUsedFlask = -Mathf.Infinity;                              // 上次使用药瓶时间
+    private float lastTimeUsedArmor = -Mathf.Infinity;                              // 上次触发护甲效果的时间
+
     private void Awake()
     {
         // 单例模式，确保只有一个 Inventory
@@ -279,4 +283,39 @@ public class Inventory : MonoBehaviour
     /// </returns>
     public ItemData_Equipment GetEquipment(EquipmentType _type) 
         => equipmentDictionary.Keys.FirstOrDefault(item => item.equipmentType == _type);
+
+    // 使用药瓶
+    public void UseFlask()
+    {
+        ItemData_Equipment currentFlask = GetEquipment(EquipmentType.Flask);        // 当前装备的药瓶
+        if (currentFlask == null)
+            return;
+
+        // 能否使用药瓶（CD是否结束）
+        bool canUseFlask = Time.time > lastTimeUsedFlask + currentFlask.itemCooldown;
+        if (canUseFlask)
+        {
+            currentFlask.Effect(null);                                              // 触发药瓶效果
+            lastTimeUsedFlask = Time.time;                                          // 记录此次使用时间
+        }
+        else
+            Debug.Log("Flask on cooldown");
+    }
+
+    // 能否触发护甲效果（CD是否结束）
+    public bool CanUseArmor()
+    {
+        ItemData_Equipment currentArmor = GetEquipment(EquipmentType.Armor);        // 当前装备的护甲
+        if (currentArmor == null) return false;
+
+        // 能否触发护甲效果
+        if (Time.time > lastTimeUsedArmor + currentArmor.itemCooldown)
+        {
+            lastTimeUsedArmor = Time.time;                                          // 记录此次触发时间
+            return true;
+        }
+
+        Debug.Log("Armor on cooldown");
+        return false;
+    }
 }

@@ -80,12 +80,15 @@ public class Enemy : Entity
     }
 
     // 冻结敌人的时间持续几秒
-    protected virtual IEnumerator FreezeTimeFor(float _seconds)
+    protected virtual IEnumerator FreezeTimeCoroutine(float _seconds)
     {
         FreezeTime(true);
         yield return new WaitForSeconds(_seconds);
         FreezeTime(false);
     }
+
+    // 冻结敌人的时间持续几秒
+    public virtual void FreezeTimeFor(float _duration) => StartCoroutine(FreezeTimeCoroutine(_duration));
 
     #region Counter Attack Window
     // 打开反击/攻击窗口

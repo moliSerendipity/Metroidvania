@@ -86,6 +86,9 @@ public class Player : Entity
 
         if (Input.GetKeyDown(KeyCode.U))
             skill.crystal.CanUseSkill();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))                                   // 按 1 使用药瓶
+            Inventory.instance.UseFlask();
     }
 
     // 给该脚本的GameObject类型的sword变量赋值

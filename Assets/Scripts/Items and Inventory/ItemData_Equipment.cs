@@ -17,6 +17,7 @@ public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;                                             // 装备类型
     public ItemEffect[] itemEffects;                                                // 装备附带的效果
+    public float itemCooldown;                                                      // 装备效果的CD
 
     [Header("Major stats")]
     public float strength;

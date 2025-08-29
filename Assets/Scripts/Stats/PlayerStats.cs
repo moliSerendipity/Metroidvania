@@ -21,6 +21,14 @@ public class PlayerStats : EntityStats
         //player.DamageEffect();                                                      // 显示受伤效果
     }
 
+    // 减少血量，并触发护甲效果
+    protected override void DecreaseHealthBy(float _damage)
+    {
+        base.DecreaseHealthBy(_damage);
+
+        Inventory.instance.GetEquipment(EquipmentType.Armor)?.Effect(player.transform);
+    }
+
     // 死亡，进入死亡状态
     protected override void Die()
     {

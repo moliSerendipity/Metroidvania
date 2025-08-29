@@ -88,6 +88,24 @@ public class EntityStats : MonoBehaviour
             isShocked = false;
     }
 
+    /// <summary>
+    /// 增加buff
+    /// </summary>
+    /// <param name="_statToModify">加成属性</param>
+    /// <param name="_modifier">加成数值</param>
+    /// <param name="_duration">buff持续时间</param>
+    public virtual void IncreaseStatBy(Stat _statToModify, float _modifier,float _duration)
+    {
+        StartCoroutine(StatModCoroutine(_statToModify, _modifier, _duration));
+    }
+
+    private IEnumerator StatModCoroutine(Stat _statToModify, float _modifier, float _duration)
+    {
+        _statToModify.AddModifier(_modifier);
+        yield return new WaitForSeconds(_duration);
+        _statToModify.RemoveModifier(_modifier);
+    }
+
     // 获取生命上限
     public float GetMaxHealthValue() => maxHealth.GetValue() + vitality.GetValue() * 5;
 
@@ -119,11 +137,20 @@ public class EntityStats : MonoBehaviour
          return _damage * (critDamage.GetValue() + strength.GetValue());
     }
 
+    // 恢复生命值
+    public virtual void IncreaseHealthBy(float _amount)
+    {
+        currentHealth += _amount;
+        if (currentHealth > GetMaxHealthValue())
+            currentHealth = GetMaxHealthValue();
+        onHealthChanged?.Invoke();                                                  // 血条 UI 更新
+    }
+
     // 减少血量
     protected virtual void DecreaseHealthBy(float _damage)
     {
         currentHealth -= _damage;
-        onHealthChanged?.Invoke();
+        onHealthChanged?.Invoke();                                                  // 血条 UI 更新
     }
 
     // 受到伤害
@@ -152,6 +179,8 @@ public class EntityStats : MonoBehaviour
         // 总伤害值如果低于被攻击对象护甲，则只造成5%的伤害，否则最终伤害为总伤害值-被攻击对象护甲值
         totalDamage = (totalDamage > _targetStats.armor.GetValue()) ? totalDamage - _targetStats.armor.GetValue() : totalDamage * 0.05f;
         _targetStats.TakeDamage(totalDamage);                                       // 被攻击对象受伤
+
+        DoMagicDamage(_targetStats);
     }
 
     // 攻击，对目标造成法伤
