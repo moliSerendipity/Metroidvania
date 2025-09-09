@@ -100,4 +100,30 @@ public class ItemData_Equipment : ItemData
         playerStats.iceDamage.RemoveModifier(iceDamage);
         playerStats.lightningDamage.RemoveModifier(lightningDamage);
     }
+
+    public override string GetDescription()
+    {
+        sb.Length = 0;
+        AddItemDecription("strength", strength);
+        AddItemDecription("agility", agility);
+        AddItemDecription("intelligence", intelligence);
+        AddItemDecription("vitality", vitality);
+        AddItemDecription("damage", damage);
+        AddItemDecription("critChance", critChance);
+        AddItemDecription("critDamage", critDamage);
+        AddItemDecription("health", health);
+        AddItemDecription("armor", armor);
+        AddItemDecription("evasion", evasion);
+        AddItemDecription("magicResistance", magicResistance);
+        AddItemDecription("fireDamage", fireDamage);
+        AddItemDecription("iceDamage", iceDamage);
+        AddItemDecription("lightningDamage", lightningDamage);
+        return sb.ToString();
+    }
+
+    private void AddItemDecription(string _name, float _value)
+    {
+        if (_value != 0)
+            sb.AppendLine("+ " + _value + " " + _name);
+    }
 }

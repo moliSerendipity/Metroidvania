@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 // 物品类型（大类）
@@ -19,4 +20,11 @@ public class ItemData : ScriptableObject
 
     [Range(0, 100)]
     public float dropChance;                                                        // 掉落概率
+
+    protected StringBuilder sb = new StringBuilder();
+
+    public virtual string GetDescription()
+    {
+        return "";
+    }
 }

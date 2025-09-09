@@ -43,6 +43,12 @@ public class ItemObject : MonoBehaviour
     // 玩家拾取物品时调用
     public void PickUpItem()
     {
+        if (!Inventory.instance.CanAddItem() && itemData.itemType == ItemType.Equipment)
+        {
+            rb.velocity = new Vector2(0, 5);
+            return;
+        }
+
         Inventory.instance.AddItem(itemData);                                   // 加入背包
         Destroy(gameObject);                                                    // 销毁场景里的物体
     }

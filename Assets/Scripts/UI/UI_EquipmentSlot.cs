@@ -17,7 +17,7 @@ public class UI_EquipmentSlot : UI_ItemSlot
     // 点击事件（重写 UI_ItemSlot 的点击逻辑）
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (itemImage.sprite == null)                                               // 没有装备就直接返回
+        if (item == null || item.data == null || itemImage.sprite == null)          // 没有装备就直接返回
             return;
 
         Inventory.instance.UnequipItem(item.data as ItemData_Equipment);            // 把当前装备卸下

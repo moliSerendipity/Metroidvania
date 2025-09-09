@@ -23,10 +23,12 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Transform inventorySlotParent;                         // 背包 UI 槽位父物体
     [SerializeField] private Transform stashSlotParent;                             // 仓库 UI 槽位父物体
     [SerializeField] private Transform equipmentSlotParent;                         // 装备 UI 槽位父物体
+    [SerializeField] private Transform statSlotParent;
 
     public UI_ItemSlot[] inventoryItemSlot;                                         // 背包槽位
     public UI_ItemSlot[] stashItemSlot;                                             // 仓库槽位
     public UI_EquipmentSlot[] equipmentSlot;                                        // 装备槽位
+    public UI_StatSlot[] statSlot;
 
     [Header("Items cooldown")]
     private float lastTimeUsedFlask = -Mathf.Infinity;                              // 上次使用药瓶时间
@@ -57,6 +59,7 @@ public class Inventory : MonoBehaviour
         inventoryItemSlot = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashItemSlot = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
+        statSlot = statSlotParent.GetComponentsInChildren<UI_StatSlot>();
 
         AddStartingItems();
     }
@@ -124,6 +127,9 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < stash.Count; i++)
             stashItemSlot[i].UpdateSlot(stash[i]);
 
+        for(int i = 0; i < statSlot.Length; i++)
+            statSlot[i].UpdateStatValueUI();
+
         UpdateEquipmentSlotUI();                                                    // 更新装备栏 UI 槽位显示
     }
 
@@ -152,6 +158,16 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public bool CanAddItem()
+    {
+        if (inventory.Count >= inventoryItemSlot.Length)
+        {
+            Debug.Log("No more space");
+            return false;
+        }
+        return true;
+    }
+
     /// <summary>
     /// 添加指定数量物品，根据物品类型决定放背包还是仓库
     /// </summary>
@@ -159,7 +175,7 @@ public class Inventory : MonoBehaviour
     /// <param name="amount">要添加的数量</param>
     public void AddItem(ItemData _item, int amount = 1)
     {
-        if (_item.itemType == ItemType.Equipment)
+        if (_item.itemType == ItemType.Equipment && CanAddItem())
             AddToInventory(_item, amount);                                                  // 装备 → 背包
         else if (_item.itemType == ItemType.Material)
             AddToStash(_item, amount);                                                      // 材料 → 仓库

@@ -5,12 +5,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
+public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    private UI ui;
     [SerializeField] protected Image itemImage;                                 // 槽位里显示的图片（物品图标）
     [SerializeField] private TextMeshProUGUI itemText;                          // 槽位右下角的文字（物品数量）
 
     public InventoryItem item;                                                  // 当前槽位绑定的物品（可能为空）
+
+    private void Start()
+    {
+        ui = GetComponentInParent<UI>();
+    }
 
     // 更新槽位的显示内容
     public void UpdateSlot(InventoryItem _newItem)
@@ -48,15 +54,32 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
     // 点击格子时触发逻辑
     public virtual void OnPointerDown(PointerEventData eventData)
     {
+        if (item != null)
+            return;
+
         // 按住 LeftControl 丢弃物品
-        if (item != null && Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             Inventory.instance.RemoveItem(item.data);
             return;
         }
 
         // 装备物品
-        if (item != null && item.data.itemType == ItemType.Equipment)
+        if (item.data.itemType == ItemType.Equipment)
             Inventory.instance.EquipItem(item.data);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (item == null) return;
+
+        ui.itemToolTip.ShowToolTip(item.data as ItemData_Equipment);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (item == null) return;
+
+        ui.itemToolTip.HideToolTip();
     }
 }

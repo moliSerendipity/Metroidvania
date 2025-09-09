@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -282,5 +283,42 @@ public class EntityStats : MonoBehaviour
     protected virtual void Die()
     {
         isDead = true;
+    }
+
+    public Stat GetStat(StatType _statType)
+    {
+        switch (_statType)
+        {
+            case StatType.strength:
+                return strength;
+            case StatType.agility:
+                return agility;
+            case StatType.intellience:
+                return intelligence;
+            case StatType.vitality:
+                return vitality;
+            case StatType.damage:
+                return damage;
+            case StatType.critChance:
+                return critChance;
+            case StatType.critDamage:
+                return critDamage;
+            case StatType.health:
+                return maxHealth;
+            case StatType.armor:
+                return armor;
+            case StatType.evasion:
+                return evasion;
+            case StatType.magicResistance:
+                return magicResistance;
+            case StatType.fireDamage:
+                return fireDamage;
+            case StatType.iceDamage:
+                return iceDamage;
+            case StatType.lightningDamage:
+                return lightningDamage;
+            default:
+                return null;
+        }
     }
 }
