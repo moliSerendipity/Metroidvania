@@ -10,6 +10,7 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject optionsUI;
 
     public UI_ItemToolTip itemToolTip;
+    public UI_CraftWindow craftWindow;
 
     void Start()
     {
