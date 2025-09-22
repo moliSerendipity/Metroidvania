@@ -11,6 +11,7 @@ public class UI : MonoBehaviour
 
     public UI_ItemToolTip itemToolTip;
     public UI_CraftWindow craftWindow;
+    public UI_SkillToolTip skillToolTip;
 
     void Start()
     {
