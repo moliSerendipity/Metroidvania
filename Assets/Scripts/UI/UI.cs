@@ -2,44 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 用于绑定按键和对应的 UI 面板
+[System.Serializable]
+public class UIKeyBinding
+{
+    public KeyCode key;                                                             // 快捷键
+    public GameObject uiPanel;                                                      // 绑定的 UI 面板
+}
+
+// 游戏 UI 管理器
 public class UI : MonoBehaviour
 {
-    [SerializeField] private GameObject characterUI;
-    [SerializeField] private GameObject skillTreeUI;
-    [SerializeField] private GameObject craftUI;
-    [SerializeField] private GameObject optionsUI;
+    [Header("主 UI 窗口")]
+    [SerializeField] private GameObject characterUI;                                // 角色属性面板
+    [SerializeField] private GameObject skillTreeUI;                                // 技能树面板
+    [SerializeField] private GameObject craftUI;                                    // 合成系统面板
+    [SerializeField] private GameObject optionsUI;                                  // 游戏选项/设置面板
 
-    public UI_ItemToolTip itemToolTip;
-    public UI_CraftWindow craftWindow;
-    public UI_SkillToolTip skillToolTip;
+    [Header("子 UI 组件")]
+    public UI_ItemToolTip itemToolTip;                                              // 物品提示框
+    public UI_SkillToolTip skillToolTip;                                            // 技能提示框
+    public UI_CraftWindow craftWindow;                                              // 合成窗口
+
+    [Header("UI 面板快捷键绑定表")]
+    public List<UIKeyBinding>  uiKeyBindings = new List<UIKeyBinding>();
+    //private Dictionary<KeyCode, GameObject> uiKeyBindings;                          // 快捷键映射表
 
     void Start()
     {
-        itemToolTip = GetComponentInChildren<UI_ItemToolTip>(true);
-        SwitchTo(null);
+        SwitchTo(null);                                                             // 初始状态：关闭所有 UI
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-            SwitchWithKeyTo(characterUI);
-        else if (Input.GetKeyDown(KeyCode.D))
-            SwitchWithKeyTo(skillTreeUI);
-        else if (Input.GetKeyDown(KeyCode.E))
-            SwitchWithKeyTo(craftUI);
-        else if (Input.GetKeyDown(KeyCode.F))
-            SwitchWithKeyTo(optionsUI);
+        // 遍历所有快捷键 → 检查是否按下
+        foreach (var binding in uiKeyBindings)
+        {
+            if (Input.GetKeyDown(binding.key))
+            {
+                SwitchWithKeyTo(binding.uiPanel);
+                break;                                                              // 一次只处理一个输入
+            }
+        }
     }
 
+    /// <summary>
+    /// 切换到指定 UI，其他 UI 自动隐藏
+    /// </summary>
+    /// <param name="_menu">要打开的 UI </param>
     public void SwitchTo(GameObject _menu)
     {
+        // 关闭所有子 UI
         for (int i = 0; i < transform.childCount; i++)
             transform.GetChild(i).gameObject.SetActive(false);
 
+        // 打开指定 UI
         if (_menu != null)
             _menu.SetActive(true);
     }
 
+    /// <summary>
+    /// 使用快捷键切换 UI：
+    /// 如果目标 UI 已经打开 → 关闭它
+    /// 如果目标 UI 关闭 → 打开它，并关闭其他 UI
+    /// </summary>
+    /// <param name="_menu">要打开的 UI </param>
     public void SwitchWithKeyTo(GameObject _menu)
     {
         if (_menu != null && _menu.activeSelf)

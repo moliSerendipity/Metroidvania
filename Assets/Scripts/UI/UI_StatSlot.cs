@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class UI_StatSlot : MonoBehaviour
 {
-    [SerializeField] private string statName;
-
     [SerializeField] private StatType statType;
+    [SerializeField] private string statName;
     [SerializeField] private TextMeshProUGUI statNameText;
     [SerializeField] private TextMeshProUGUI statValueText;
 
@@ -18,6 +17,7 @@ public class UI_StatSlot : MonoBehaviour
         if (statNameText != null )
             statNameText.text = statName;
     }
+
     void Start()
     {
         UpdateStatValueUI();

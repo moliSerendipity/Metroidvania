@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+// UI 装备槽位的逻辑，负责显示物品图标、数量，并响应点击、悬停等事件
 public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    protected UI ui;
+    protected UI ui;                                                            // UI 管理器
     [SerializeField] protected Image itemImage;                                 // 槽位里显示的图片（物品图标）
     [SerializeField] protected TextMeshProUGUI itemText;                        // 槽位右下角的文字（物品数量）
 
@@ -18,7 +19,10 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
         ui = GetComponentInParent<UI>();
     }
 
-    // 更新槽位的显示内容
+    /// <summary>
+    /// 更新槽位显示内容
+    /// </summary>
+    /// <param name="_newItem">要绑定的新物品，可以为空</param>
     public void UpdateSlot(InventoryItem _newItem)
     {
         item = _newItem;                                                        // 绑定到当前格子
@@ -36,13 +40,16 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
         }
         else
         {
-            itemImage.color = Color.clear;                                      // 把图片隐藏
+            // 清空显示
+            itemImage.color = Color.clear;                                      // 图标透明
             itemImage.sprite = null;                                            // 清空图标
             itemText.text = "";                                                 // 清空数量
         }
     }
 
-    // 手动清空格子
+    /// <summary>
+    /// 手动清空格子（彻底移除物品）
+    /// </summary>
     public void CleanUpSlot()
     {
         item = null;
@@ -51,7 +58,9 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
         itemText.text = "";
     }
 
-    // 点击格子时触发逻辑
+    /// <summary>
+    /// 点击格子时的逻辑
+    /// </summary>
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         if (item == null)
@@ -64,16 +73,20 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
             return;
         }
 
-        // 装备物品
+        // 如果是装备：直接装备
         if (item.data.itemType == ItemType.Equipment)
             Inventory.instance.EquipItem(item.data);
 
+        // 显示点击后当前格子新物品的提示框，或当格子里无物品时隐藏提示框
         if (item != null)
             ui.itemToolTip.ShowToolTip(item.data as ItemData_Equipment);
         else
             ui.itemToolTip.HideToolTip();
     }
 
+    /// <summary>
+    /// 鼠标移入格子：显示提示框
+    /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (item == null) return;
@@ -81,6 +94,9 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
         ui.itemToolTip.ShowToolTip(item.data as ItemData_Equipment);
     }
 
+    /// <summary>
+    /// 鼠标移出格子：隐藏提示框
+    /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
         if (item == null) return;

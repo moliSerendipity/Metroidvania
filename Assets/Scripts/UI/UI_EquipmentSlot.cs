@@ -22,7 +22,7 @@ public class UI_EquipmentSlot : UI_ItemSlot
 
         Inventory.instance.UnequipItem(item.data as ItemData_Equipment);            // 把当前装备卸下
         Inventory.instance.AddItem(item.data as ItemData_Equipment);                // 把卸下的装备重新放回背包
-        ui.itemToolTip.HideToolTip();
+        ui.itemToolTip.HideToolTip();                                               // 隐藏物品提示框
         CleanUpSlot();                                                              // 清空槽位
     }
 }
