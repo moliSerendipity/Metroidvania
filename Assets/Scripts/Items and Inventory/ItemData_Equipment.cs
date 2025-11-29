@@ -123,7 +123,7 @@ public class ItemData_Equipment : ItemData
         AddItemDecription("iceDamage", iceDamage);
         AddItemDecription("lightningDamage", lightningDamage);
 
-        if (itemEffectDescription.Length > 0)
+        if (itemEffectDescription!=null && itemEffectDescription.Length > 0)
             sb.Append(itemEffectDescription);
         return sb.ToString();
     }

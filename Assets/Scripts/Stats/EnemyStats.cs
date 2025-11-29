@@ -6,6 +6,7 @@ public class EnemyStats : EntityStats
 {
     private Enemy enemy;
     private ItemDrop myDropSystem;
+    public Stat soulsDropAmount;
 
     [Header("Level details")]
     [SerializeField] private int level = 1;                                         // 敌人等级
@@ -21,10 +22,9 @@ public class EnemyStats : EntityStats
 
     protected override void Start()
     {
+        soulsDropAmount.SetDefaultValue(100);
         ApplyLevelModifiers();
-
         base.Start();
-
     }
 
     private void ApplyLevelModifiers()
@@ -46,6 +46,8 @@ public class EnemyStats : EntityStats
         Modify(fireDamage);
         Modify(iceDamage);
         Modify(lightningDamage);
+
+        Modify(soulsDropAmount);
     }
 
     private void Modify(Stat _stat)
@@ -71,6 +73,7 @@ public class EnemyStats : EntityStats
         base.Die();
 
         enemy.Die();                                                                // 进入死亡状态
+        PlayerManager.instance.currency += (int)soulsDropAmount.GetValue();
         myDropSystem.GenerateDrop();                                                // 掉落物品
     }
 }

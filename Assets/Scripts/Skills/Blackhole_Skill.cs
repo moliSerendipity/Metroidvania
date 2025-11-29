@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Blackhole_Skill : Skill
 {
+    [SerializeField] private UI_SkillTreeSlot blackholeUnlockButton;
+    public bool blackholeUnlocked { get; private set; }
     [SerializeField] private GameObject blackholePrefab;                            // 黑洞预制体
     [SerializeField] private float maxSize;                                         // 黑洞最大尺寸
     [SerializeField] private float growSpeed;                                       // 黑洞增长速度（插值，非线性）
@@ -13,6 +15,32 @@ public class Blackhole_Skill : Skill
     [SerializeField] private float blackholeDuration;                               // 黑洞持续时间
 
     Blackhole_Skill_Controller currentBlackhole;                                    // 当前黑洞控制器脚本
+
+    protected override void Start()
+    {
+        base.Start();
+
+        blackholeUnlockButton.OnSkillUnlocked += UnlockBlackHole;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+    }
+
+    protected override void CheckUnlock()
+    {
+        base.CheckUnlock();
+        UnlockBlackHole(null);
+    }
+
+    private void UnlockBlackHole(UI_SkillTreeSlot slot)
+    {
+        if (blackholeUnlocked) return;
+
+        if (blackholeUnlockButton.unlocked)
+            blackholeUnlocked = true;
+    }
 
     public override bool CanUseSkill()
     {
@@ -29,16 +57,6 @@ public class Blackhole_Skill : Skill
         currentBlackhole = newBlackhole.GetComponent<Blackhole_Skill_Controller>();
         // 设置黑洞参数
         currentBlackhole.SetupBlackhole(maxSize, growSpeed, shrinkSpeed, amountOfAttacks, cloneAttackCooldown, blackholeDuration);
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
     }
 
     // 检查技能是否已完成

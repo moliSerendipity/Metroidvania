@@ -53,6 +53,7 @@ public class EntityStats : MonoBehaviour
 
     public System.Action onHealthChanged;                                           // 
     public bool isDead { get; private set; }
+    private bool isVulnerable;
 
     private void Awake()
     {
@@ -89,6 +90,18 @@ public class EntityStats : MonoBehaviour
             isShocked = false;
     }
 
+    public void MakeVulnerableFor(float _duration)
+    {
+        StartCoroutine(VulnerableCoroutine(_duration));
+    }
+
+    private IEnumerator VulnerableCoroutine(float _duration)
+    {
+        isVulnerable = true;
+        yield return new WaitForSeconds(_duration);
+        isVulnerable = false;
+    }
+
     /// <summary>
     /// 增加buff
     /// </summary>
@@ -110,13 +123,19 @@ public class EntityStats : MonoBehaviour
     // 获取生命上限
     public float GetMaxHealthValue() => maxHealth.GetValue() + vitality.GetValue() * 5;
 
+    public virtual void OnEvasion()
+    {
+
+    }
+
     // 是否能闪避攻击
-    private bool TargetCanAvoidAttack(EntityStats _targetStats)
+    protected bool TargetCanAvoidAttack(EntityStats _targetStats)
     {
         // 总闪避率
         float totalEvasion = _targetStats.evasion.GetValue() + _targetStats.agility.GetValue();
         if (Random.Range(0, 100) < totalEvasion)
         {
+            _targetStats.OnEvasion();
             Debug.Log("Attack avoided");
             return true;
         }
@@ -124,7 +143,7 @@ public class EntityStats : MonoBehaviour
     }
 
     // 能否暴击
-    private bool CanCrit()
+    protected bool CanCrit()
     {
         float totalCriticalChance = critChance.GetValue() + agility.GetValue();
         if (Random.Range(0, 100) <= totalCriticalChance)
@@ -133,7 +152,7 @@ public class EntityStats : MonoBehaviour
     }
 
     // 暴击伤害
-    private float CalculateCriticalDamage(float _damage)
+    protected float CalculateCriticalDamage(float _damage)
     {
          return _damage * (critDamage.GetValue() + strength.GetValue());
     }
@@ -150,6 +169,9 @@ public class EntityStats : MonoBehaviour
     // 减少血量
     protected virtual void DecreaseHealthBy(float _damage)
     {
+        if (isVulnerable)
+            _damage *= 1.2f;
+
         currentHealth -= _damage;
         onHealthChanged?.Invoke();                                                  // 血条 UI 更新
     }

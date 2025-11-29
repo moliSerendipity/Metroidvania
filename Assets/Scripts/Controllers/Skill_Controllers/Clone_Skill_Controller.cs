@@ -9,6 +9,7 @@ public class Clone_Skill_Controller : MonoBehaviour
     private Animator anim;
     [SerializeField] private float colorLossSpeed;                                  // 克隆残影颜色衰减速度
     private float cloneTimer;                                                       // 克隆残影计时器
+    private float attackMultiplier;
 
     [SerializeField] private Transform attackCheck;                                 // 攻击检测点
     [SerializeField] private float attackCheckRadius = 0.8f;                        // 攻击检测半径
@@ -69,7 +70,13 @@ public class Clone_Skill_Controller : MonoBehaviour
             // 如果碰撞体上挂有Enemy脚本，让Enemy受伤，如果可以克隆残影，则有一定概率克隆残影
             if (hit.GetComponent<Enemy>())
             {
-                player.stats.DoDamage(hit.GetComponent<EntityStats>());
+                //player.stats.DoDamage(hit.GetComponent<EntityStats>());
+                PlayerStats playerStats = player.GetComponent<PlayerStats>();
+                EnemyStats enemyStats = hit.GetComponent<EnemyStats>();
+
+                playerStats.CloneDoDamage(enemyStats, attackMultiplier);
+                if (player.skill.clone.canApplyOnHitEffect)
+                    Inventory.instance.GetEquipment(EquipmentType.Weapon)?.Effect(hit.transform);
 
                 if (canDuplicateClone)
                 {
@@ -81,7 +88,8 @@ public class Clone_Skill_Controller : MonoBehaviour
     }
 
     // 进行克隆体的设置
-    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicateClone, float _chanceToDuplicate, Player _player)
+    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset, Transform _closestEnemy, 
+        bool _canDuplicateClone, float _chanceToDuplicate, Player _player, float _attackMultiplier)
     {
         if (_canAttack)
             anim.SetInteger("AttackNumber", Random.Range(1,4));                     // 随机选择攻击动画
@@ -92,6 +100,7 @@ public class Clone_Skill_Controller : MonoBehaviour
         canDuplicateClone = _canDuplicateClone;                                     // 设置是否可以克隆残影
         chanceToDuplicate = _chanceToDuplicate;                                     // 设置克隆残影概率
         player = _player;
+        attackMultiplier = _attackMultiplier;
 
         FaceClosestTarget();                                                        // 面向最近的敌人
     }

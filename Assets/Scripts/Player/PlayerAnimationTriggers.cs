@@ -45,7 +45,7 @@ public class PlayerAnimationTriggers : MonoBehaviour
             if (hit.GetComponent<Enemy>())
             {
                 EnemyStats _target = hit.GetComponent<EnemyStats>();
-                player.stats.DoMagicDamage(_target);
+                player.stats.DoDamage(_target);
 
                 Inventory.instance.GetEquipment(EquipmentType.Weapon)?.Effect(_target.transform);
             }

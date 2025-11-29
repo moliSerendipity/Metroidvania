@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 
 // 物品类型（大类）
@@ -17,12 +18,21 @@ public class ItemData : ScriptableObject
     public ItemType itemType;                                                       // 物品类型
     public string itemName;                                                         // 物品名称
     public Sprite icon;                                                             // 物品图标
+    public string itemID;                                                           // 物品唯一标识符
 
     [Range(0, 100)]
     public float dropChance;                                                        // 掉落概率
 
     // 用来拼接描述信息的字符串构建器（避免频繁创建字符串，优化性能）
     protected StringBuilder sb = new StringBuilder();
+
+    private void OnValidate()
+    {
+#if UNITY_EDITOR
+        string path = UnityEditor.AssetDatabase.GetAssetPath(this);
+        itemID = AssetDatabase.AssetPathToGUID(path);
+#endif
+    }
 
     /// <summary>
     /// 获取物品描述（虚方法，子类可以重写）

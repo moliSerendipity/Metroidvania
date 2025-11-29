@@ -9,6 +9,7 @@ public class UI_SkillToolTip : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI skillName;                             // 技能名称
     [SerializeField] private TextMeshProUGUI skillText;                             // 技能描述
+    [SerializeField] private TextMeshProUGUI skillCost;
 
     private void Start()
     {
@@ -16,10 +17,11 @@ public class UI_SkillToolTip : MonoBehaviour
     }
 
     // 显示技能提示框
-    public void ShowToolTip(string _skillName, string _skillDescription)
+    public void ShowToolTip(string _skillName, string _skillDescription, int _price)
     {
         skillName.text = _skillName;
         skillText.text = _skillDescription;
+        skillCost.text = "Cost: " + _price;
         gameObject.SetActive(true);                                                 // 激活提示框
     }
 

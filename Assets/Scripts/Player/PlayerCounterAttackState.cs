@@ -41,10 +41,11 @@ public class PlayerCounterAttackState : PlayerState
                 {
                     stateTimer = 10f;                                               // 给一个大值，避免反击成功动画没播完
                     player.anim.SetBool("SuccessfulCounterAttack", true);           // 设置成功反击动画参数为true
+                    player.skill.parry.UseSkill();                                  // 使用反击技能
                     if (canCreateClone)
                     {
                         // 是否在反击时创建克隆体
-                        player.skill.clone.CreateCloneOnCounterAttack(hit.transform);
+                        player.skill.parry.MakeMirageOnParry(hit.transform);
                         canCreateClone = false;                                     // 不能再创建克隆体,只能创建一次
                     }
                 }

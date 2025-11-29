@@ -80,8 +80,16 @@ public class Sword_Skill_Controller : MonoBehaviour
     private void SwordSkillDamage(Enemy enemy)
     {
         if (enemy == null) return;
-        player.stats.DoDamage(enemy.GetComponent<EntityStats>());           // 敌人碰到剑会受到伤害
-        enemy.FreezeTimeFor(freezeTimeDuration);                            // 冻结敌人的时间持续几秒       
+
+        EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+        player.stats.DoDamage(enemyStats);                                  // 敌人碰到剑会受到伤害
+
+        if (player.skill.sword.timeStopUnlocked)
+            enemy.FreezeTimeFor(freezeTimeDuration);                        // 冻结敌人的时间持续几秒       
+
+        if (player.skill.sword.vulnerableUnlocked)
+            enemyStats.MakeVulnerableFor(freezeTimeDuration);
+
         // 产生 Amulet 的效果
         Inventory.instance.GetEquipment(EquipmentType.Amulet)?.Effect(enemy.transform);
     }

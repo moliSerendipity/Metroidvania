@@ -84,7 +84,7 @@ public class Player : Entity
         stateMachine.currentState.Update();                                     // 更新当前状态
         CheckForDashInput();                                                    // 检测冲刺输入
 
-        if (Input.GetKeyDown(KeyCode.U))
+        if (Input.GetKeyDown(KeyCode.U) && skill.crystal.crystalUnlcoked)
             skill.crystal.CanUseSkill();
 
         if (Input.GetKeyDown(KeyCode.Alpha1))                                   // 按 1 使用药瓶
@@ -133,6 +133,9 @@ public class Player : Entity
     {
         if (IsWallDetected() || stateMachine.currentState == blackhole)         // 如果检测到墙壁或在使用黑洞，则返回，禁止冲刺
             return;
+        if (skill.dash.dashUnlocked == false)                                   // 如果 dash 技能未解锁，则返回
+            return;
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill() )
         {
             dashDir = Input.GetAxisRaw("Horizontal");                           // 冲刺方向

@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    [SerializeField] protected float cooldown;                                      // 技能CD
-    protected float cooldownTimer;                                                  // 技能CD计时器
+    public float cooldown;                                                          // 技能CD
+    public float cooldownTimer;                                                     // 技能CD计时器
     protected Player player;                                                        // 玩家脚本
 
     protected virtual void Start()
     {
         player = PlayerManager.instance.player;
+        CheckUnlock();
     }
 
     protected virtual void Update()
     {
         cooldownTimer -= Time.deltaTime;                                            // 技能CD计时器倒计时
+    }
+
+    protected virtual void CheckUnlock()
+    {
+
     }
 
     // 是否可以使用技能

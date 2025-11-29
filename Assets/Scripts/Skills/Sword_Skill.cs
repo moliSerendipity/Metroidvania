@@ -17,27 +17,38 @@ public class Sword_Skill : Skill
     public SwordType swordType = SwordType.Regular;                             // 剑的种类
 
     [Header("Bounce info")]
+    [SerializeField] private UI_SkillTreeSlot bounceUnlockButton;
     [SerializeField] private int bounceAmount;                                  // 可弹射次数
     [SerializeField] private float bounceGravity;                               // 弹射剑的重力
     [SerializeField] private float bounceSpeed;                                 // 弹射时的移动速度
 
     [Header("Pierce info")]
+    [SerializeField] private UI_SkillTreeSlot pierceUnlockButton;
     [SerializeField] private int pierceAmount;                                  // 可穿刺数量
     [SerializeField] private float pierceGravity;                               // 穿刺剑的重力
 
     [Header("Spin info")]
+    [SerializeField] private UI_SkillTreeSlot spinUnlockButton;
     [SerializeField] private float maxSpinDistance = 7;                         // 旋转剑可达的最远距离
     [SerializeField] private float spinDuration = 2;                            // 旋转持续时间
     [SerializeField] private float spinGravity = 1;                             // 旋转剑的重力
     [SerializeField] private float hitCooldown = 0.35f;                         // 旋转攻击间隔
 
     [Header("Skill info")]
+    [SerializeField] private UI_SkillTreeSlot swordUnlockButton;
+    public bool swordUnlocked { get; private set; }                             // 是否解锁剑技能
     [SerializeField] private GameObject swordPrefab;                            // 剑的预制体
     [SerializeField] private Vector2 launchForce;                               // 发射力度
     [SerializeField] private float swordGravity;                                // 剑的重力
     [SerializeField] private float freezeTimeDuartion;                          // 冻结敌人时间持续多久
     [SerializeField] private float returnSpeed;                                 // 回收过程中剑的运动速度
     [SerializeField] private float maxTravelDistance;                           // 最远可达距离
+
+    [Header("Passive skills")]
+    [SerializeField] private UI_SkillTreeSlot timeStopUnlockButton;
+    public bool timeStopUnlocked { get; private set; }
+    [SerializeField] private UI_SkillTreeSlot vulnerableUnlockButton;
+    public bool vulnerableUnlocked { get; private set; }
 
     private Vector2 finalDir;                                                   // 最终方向
 
@@ -55,6 +66,13 @@ public class Sword_Skill : Skill
 
         GenerateDots();                                                         // 先生成瞄准曲线的点
         SetupGravity();                                                         // 设置剑的重力
+
+        swordUnlockButton.OnSkillUnlocked += UnlockSword;
+        bounceUnlockButton.OnSkillUnlocked += UnlockBounceSword;
+        pierceUnlockButton.OnSkillUnlocked += UnlockPierceSword;
+        spinUnlockButton.OnSkillUnlocked += UnlockSpinSword;
+        timeStopUnlockButton.OnSkillUnlocked += UnlockTimeStop;
+        vulnerableUnlockButton.OnSkillUnlocked += UnlockVulnerable;
     }
 
 
@@ -119,7 +137,70 @@ public class Sword_Skill : Skill
         DotsActive(false);                                                      // 抛出剑的时候使剑的轨迹点不可见
     }
 
-    #region Aim
+    #region Unlock region
+    protected override void CheckUnlock()
+    {
+        UnlockSword(null);
+        UnlockBounceSword(null);
+        UnlockSpinSword(null);
+        UnlockPierceSword(null);
+        UnlockTimeStop(null);
+        UnlockVulnerable(null);
+    }
+
+    private void UnlockSword(UI_SkillTreeSlot slot)
+    {
+        if (swordUnlocked) return;
+
+        if (swordUnlockButton.unlocked)
+        {
+            swordType = SwordType.Regular;
+            swordUnlocked = true;
+        }
+    }
+
+    private void UnlockBounceSword(UI_SkillTreeSlot slot)
+    {
+        if (swordType == SwordType.Bounce) return;
+
+        if (bounceUnlockButton.unlocked)
+            swordType = SwordType.Bounce;
+    }
+
+    private void UnlockSpinSword(UI_SkillTreeSlot slot)
+    {
+        if (swordType == SwordType.Spin) return;
+
+        if (spinUnlockButton.unlocked)
+            swordType = SwordType.Spin;
+    }
+
+    private void UnlockPierceSword(UI_SkillTreeSlot slot)
+    {
+        if (swordType == SwordType.Pierce) return;
+
+        if (pierceUnlockButton.unlocked)
+            swordType = SwordType.Pierce;
+    }
+
+    private void UnlockTimeStop(UI_SkillTreeSlot slot)
+    {
+        if (timeStopUnlocked) return;
+
+        if (timeStopUnlockButton.unlocked)
+            timeStopUnlocked = true;
+    }
+
+    private void UnlockVulnerable(UI_SkillTreeSlot slot)
+    {
+        if (vulnerableUnlocked) return;
+
+        if (vulnerableUnlockButton.unlocked)
+            vulnerableUnlocked = true;
+    }
+    #endregion
+
+    #region Aim region
     // 瞄准方向（角色位置指向鼠标位置）
     public Vector2 AimDirection()
     {

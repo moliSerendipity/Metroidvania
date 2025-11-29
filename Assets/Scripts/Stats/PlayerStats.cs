@@ -29,12 +29,37 @@ public class PlayerStats : EntityStats
         Inventory.instance.GetEquipment(EquipmentType.Armor)?.Effect(player.transform);
     }
 
+    public override void OnEvasion()
+    {
+        player.skill.dodge.CreateMirageOnDodge();
+    }
+
+    public void CloneDoDamage(EntityStats _targetStats, float _multiplier)
+    {
+        // 是否能闪避攻击
+        if (TargetCanAvoidAttack(_targetStats))
+            return;
+
+        float totalDamage = damage.GetValue() + strength.GetValue();                  // 总伤害值
+        // 如果暴击，总伤害值改成暴击后的伤害
+        if (CanCrit())
+            totalDamage = CalculateCriticalDamage(totalDamage);
+        // 总伤害值如果低于被攻击对象护甲，则只造成5%的伤害，否则最终伤害为总伤害值-被攻击对象护甲值
+        totalDamage = (totalDamage > _targetStats.armor.GetValue()) ? totalDamage - _targetStats.armor.GetValue() : totalDamage * 0.05f;
+        if (_multiplier > 0) totalDamage *= _multiplier;
+        _targetStats.TakeDamage(totalDamage);                                       // 被攻击对象受伤
+
+        DoMagicDamage(_targetStats);
+    }
+
     // 死亡，进入死亡状态
     protected override void Die()
     {
         base.Die();
 
         player.Die();                                                               // 进入死亡状态
+        GameManager.instance.lostCurrencyAmount = PlayerManager.instance.currency;
+        PlayerManager.instance.currency = 0;
         GetComponent<PlayerItemDrop>()?.GenerateDrop();                             // 掉落物品
     }
 }

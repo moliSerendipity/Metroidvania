@@ -9,22 +9,82 @@ public class Crystal_Skill : Skill
     private GameObject currentCrystal;                                              // 当前水晶
     Crystal_Skill_Controller currentCrystalScript;                                  // 当前水晶脚本
 
+    [Header("Crystal simple")]
+    [SerializeField] private UI_SkillTreeSlot unlockCrystalButton;
+    public bool crystalUnlcoked { get; private set; }
+
     [Header("Crystal mirage")]
+    [SerializeField] private UI_SkillTreeSlot unlockCloneInsteadButton;             // 解锁用幻象代替水晶按钮
     [SerializeField] private bool cloneInsteadOfCrystal;                            // 是否用幻象代替水晶
 
     [Header("Explosive crystal")]
+    [SerializeField] private UI_SkillTreeSlot unlcokExplosiveButton;
     [SerializeField] private bool canExplode;                                       // 是否可以爆炸
 
     [Header("Moving crystal")]
+    [SerializeField] private UI_SkillTreeSlot unlcokMovingCrystalButton;
     [SerializeField] private bool canMoveToEnemy;                                   // 是否可以朝敌人位置移动
     [SerializeField] private float moveSpeed;                                       // 移动速度
 
     [Header("Multi stacking crystal")]
+    [SerializeField] private UI_SkillTreeSlot unlcokMultiStackButton;
     [SerializeField] private bool canUseMultiStacks;                                // 是否可以在短时间内使用多个水晶
     [SerializeField] private int amountOfStacks;                                    // 短时间内可以使用的最大水晶数量
     [SerializeField] private float multiStackCooldown;                              // 使用多个水晶的冷却时间
     [SerializeField] private float UseTimeWindow;                                   // 使用多个水晶的时间窗口
     [SerializeField] private List<GameObject> crystalList = new List<GameObject>(); // 水晶列表
+
+    protected override void Start()
+    {
+        base.Start();
+
+        unlockCrystalButton.OnSkillUnlocked += UnlockCrystal;
+        unlockCloneInsteadButton.OnSkillUnlocked += UnlockCrystalMirage;
+        unlcokExplosiveButton.OnSkillUnlocked += UnlockExplosiveCrystal;
+        unlcokMovingCrystalButton.OnSkillUnlocked += UnlockMovingCrystal;
+        unlcokMultiStackButton.OnSkillUnlocked += UnlockMultiStack;
+    }
+
+    #region Unlock skill region
+    protected override void CheckUnlock()
+    {
+        UnlockCrystal(null);
+        UnlockCrystalMirage(null);
+        UnlockExplosiveCrystal(null);
+        UnlockMovingCrystal(null);
+        UnlockMultiStack(null);
+    }
+
+    private void UnlockCrystal(UI_SkillTreeSlot slot)
+    {
+        if (unlockCrystalButton.unlocked)
+            crystalUnlcoked = true;
+    }
+
+    private void UnlockCrystalMirage(UI_SkillTreeSlot slot)
+    {
+        if (unlockCloneInsteadButton.unlocked)
+            cloneInsteadOfCrystal = true;
+    }
+
+    private void UnlockExplosiveCrystal(UI_SkillTreeSlot slot)
+    {
+        if (unlcokExplosiveButton.unlocked)
+            canExplode = true;
+    }
+
+    private void UnlockMovingCrystal(UI_SkillTreeSlot slot)
+    {
+        if (unlcokMovingCrystalButton.unlocked)
+            canMoveToEnemy = true;
+    }
+
+    private void UnlockMultiStack(UI_SkillTreeSlot slot)
+    {
+        if (unlcokMultiStackButton.unlocked)
+            canUseMultiStacks = true;
+    }
+    #endregion
 
     public override void UseSkill()
     {

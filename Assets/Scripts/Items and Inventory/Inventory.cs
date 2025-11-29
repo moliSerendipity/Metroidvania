@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEditor;
+using Unity.VisualScripting;
 
 // 背包管理类（单例）
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveManager
 {
     public static Inventory instance;                                               // 单例，方便全局调用
 
@@ -33,6 +35,12 @@ public class Inventory : MonoBehaviour
     [Header("Items cooldown")]
     private float lastTimeUsedFlask = -Mathf.Infinity;                              // 上次使用药瓶时间
     private float lastTimeUsedArmor = -Mathf.Infinity;                              // 上次触发护甲效果的时间
+
+    public float flaskCooldown { get; private set; }
+
+    [Header("Data base")]
+    public List<InventoryItem> loadedItems;
+    public List<ItemData_Equipment> loadedEquipment;
 
     private void Awake()
     {
@@ -67,8 +75,19 @@ public class Inventory : MonoBehaviour
     // 添加初始物品
     private void AddStartingItems()
     {
+        foreach (ItemData_Equipment item in loadedEquipment)
+            EquipItem(item);
+
+        if (loadedItems.Count > 0)
+        {
+            foreach (InventoryItem item in loadedItems)
+                AddItem(item.data, item.stackSize);
+            return;
+        }
+
         for (int i = 0; i < startingItems.Count; i++)
             AddItem(startingItems[i]);
+        Debug.Log("Add default items");
     }
 
     // 装备物品逻辑
@@ -127,10 +146,15 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < stash.Count; i++)
             stashItemSlot[i].UpdateSlot(stash[i]);
 
-        for(int i = 0; i < statSlot.Length; i++)
-            statSlot[i].UpdateStatValueUI();
+        UpdateStatsUI();
 
         UpdateEquipmentSlotUI();                                                    // 更新装备栏 UI 槽位显示
+    }
+
+    public void UpdateStatsUI()
+    {
+        for (int i = 0; i < statSlot.Length; i++)
+            statSlot[i].UpdateStatValueUI();
     }
 
     // 更新装备栏 UI 槽位显示
@@ -307,6 +331,7 @@ public class Inventory : MonoBehaviour
         if (currentFlask == null)
             return;
 
+        flaskCooldown = currentFlask.itemCooldown;
         // 能否使用药瓶（CD是否结束）
         bool canUseFlask = Time.time > lastTimeUsedFlask + currentFlask.itemCooldown;
         if (canUseFlask)
@@ -333,5 +358,60 @@ public class Inventory : MonoBehaviour
 
         Debug.Log("Armor on cooldown");
         return false;
+    }
+
+    public void LoadData(GameData _data)
+    {
+        List<ItemData> itemDataBase = GetItemDataBase();
+        Dictionary<string, ItemData> idToItem = new Dictionary<string, ItemData>(itemDataBase.Count);
+
+        foreach (ItemData it in itemDataBase)
+            if (it != null && !string.IsNullOrEmpty(it.itemID) && !idToItem.ContainsKey(it.itemID))
+                idToItem.Add(it.itemID, it);
+
+        foreach (KeyValuePair<string, int> pair in _data.inventory)
+        {
+            if (idToItem.TryGetValue(pair.Key, out ItemData itemData))
+            {
+                InventoryItem itemToLoad = new InventoryItem(itemData);
+                itemToLoad.stackSize = pair.Value;
+                loadedItems.Add(itemToLoad);
+            }
+            else
+                Debug.LogWarning($"LoadData: itemID '{pair.Key}' not found in Item database.");
+        }
+
+        foreach (string loadedItemID in _data.equipmentID)
+        {
+            if (idToItem.TryGetValue(loadedItemID, out ItemData equipment))
+                loadedEquipment.Add(equipment as ItemData_Equipment);
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.inventory.Clear();
+        _data.equipmentID.Clear();
+
+        foreach(KeyValuePair<ItemData, InventoryItem> pair in inventoryDictionary)
+            _data.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+        foreach (KeyValuePair<ItemData, InventoryItem> pair in stashDictionary)
+            _data.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+        foreach (KeyValuePair<ItemData_Equipment, InventoryItem> pair in equipmentDictionary)
+            _data.equipmentID.Add(pair.Key.itemID);
+    }
+
+    private List<ItemData> GetItemDataBase()
+    {
+        List<ItemData> itemDataBase = new List<ItemData>();
+        string[] assetNames = AssetDatabase.FindAssets("", new[] { "Assets/Data/Items" });
+
+        foreach (string SOName in assetNames)
+        {
+            var SOPath = AssetDatabase.GUIDToAssetPath(SOName);
+            var itemData = AssetDatabase.LoadAssetAtPath<ItemData>(SOPath);
+            itemDataBase.Add(itemData);
+        }
+        return itemDataBase;
     }
 }
