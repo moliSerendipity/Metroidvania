@@ -13,12 +13,21 @@ public class AudioManager : MonoBehaviour
     public bool playBGM;
     private int bgmIndex;
 
+    private bool canPlaySFX;
+
+    //private Coroutine decreaseVolumeCoroutine;
+    //private float defaultCoroutineVolume;
+    private Dictionary<AudioSource, float> defaultVolumes = new Dictionary<AudioSource, float>();
+    private Dictionary<AudioSource, Coroutine> decreaseVolumeCoroutines = new Dictionary<AudioSource, Coroutine>();
+
     private void Awake()
     {
         if (instance != null)
             Destroy(instance.gameObject);
         else
             instance = this;
+
+        Invoke("AllowSFX", 1f);
     }
 
     private void Update()
@@ -34,10 +43,19 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(int _sfxIndex, Transform _source = null)
     {
-        if (_sfxIndex < 0 && _sfxIndex >= sfx.Length) return;
-        if (sfx[_sfxIndex].isPlaying) return;
+        if (_sfxIndex < 0 || _sfxIndex >= sfx.Length) return;
+        //if (sfx[_sfxIndex].isPlaying) return;
+        if (canPlaySFX == false) return;
         if (_source != null && Vector2.Distance(PlayerManager.instance.player.transform.position, _source.position) > sfxMinimumDistance)
             return;
+
+        AudioSource audio = sfx[_sfxIndex];
+        if (decreaseVolumeCoroutines.ContainsKey(audio) && decreaseVolumeCoroutines[audio] != null)
+        {
+            StopCoroutine(decreaseVolumeCoroutines[audio]);
+            decreaseVolumeCoroutines.Remove(audio);
+        }
+        audio.volume = defaultVolumes.ContainsKey(audio) ? defaultVolumes[audio] : 1f;
         sfx[_sfxIndex].pitch = Random.Range(0.85f, 1.1f);
         sfx[_sfxIndex].Play(); 
     }
@@ -46,6 +64,36 @@ public class AudioManager : MonoBehaviour
     {
         if (_sfxIndex >= 0 && _sfxIndex < sfx.Length)
             sfx[_sfxIndex].Stop();
+    }
+
+    public void StopSFXWithTime(int _index)
+    {
+        if (_index < 0 || _index >= sfx.Length) return;
+
+        AudioSource audio = sfx[_index];
+        if (decreaseVolumeCoroutines.ContainsKey(audio) && decreaseVolumeCoroutines[audio] != null)
+        {
+            StopCoroutine(decreaseVolumeCoroutines[audio]);
+            audio.volume = defaultVolumes.ContainsKey(audio) ? defaultVolumes[audio] : 1f;
+            decreaseVolumeCoroutines.Remove(audio);
+        }
+        decreaseVolumeCoroutines[audio] = StartCoroutine(DecreaseVolume(audio));
+    }
+
+    private IEnumerator DecreaseVolume(AudioSource _audio)
+    {
+        defaultVolumes[_audio] = _audio.volume;
+        while (_audio.volume > 0.1f)
+        {
+            _audio.volume -= _audio.volume * 0.2f;
+            yield return new WaitForSeconds(0.25f);
+            if (_audio.volume <= 0.1f)
+            {
+                _audio.Stop();
+                _audio.volume = defaultVolumes[_audio];
+                break;
+            }
+        }
     }
 
     public void PlayRandomBGM()
@@ -67,4 +115,6 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < bgm.Length; i++)
             bgm[i].Stop();
     }
+
+    private void AllowSFX() => canPlaySFX = true;
 }

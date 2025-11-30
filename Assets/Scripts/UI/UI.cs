@@ -72,7 +72,10 @@ public class UI : MonoBehaviour, ISaveManager
 
         // 打开指定 UI
         if (_menu != null)
+        {
             _menu.SetActive(true);
+            AudioManager.instance.PlaySFX(7);
+        }
     }
 
     /// <summary>
