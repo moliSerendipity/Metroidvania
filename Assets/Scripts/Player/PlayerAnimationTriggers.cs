@@ -36,6 +36,7 @@ public class PlayerAnimationTriggers : MonoBehaviour
     // 攻击触发动画事件
     private void AttackTrigger()
     {
+        AudioManager.instance.PlaySFX(2);
         // 获取攻击范围内的所有碰撞体
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
         // 遍历所有碰撞体

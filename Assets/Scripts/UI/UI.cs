@@ -12,7 +12,7 @@ public class UIKeyBinding
 }
 
 // 游戏 UI 管理器
-public class UI : MonoBehaviour
+public class UI : MonoBehaviour, ISaveManager
 {
     [Header("End screen")]
     [SerializeField] private UI_FadeScreen fadeScreen;
@@ -35,6 +35,8 @@ public class UI : MonoBehaviour
     [Header("UI 面板快捷键绑定表")]
     public List<UIKeyBinding>  uiKeyBindings = new List<UIKeyBinding>();
     //private Dictionary<KeyCode, GameObject> uiKeyBindings;                          // 快捷键映射表
+
+    [SerializeField] private UI_VolumeSlider[] volumeSettings;
 
     void Start()
     {
@@ -118,4 +120,26 @@ public class UI : MonoBehaviour
     }
 
     public void RestartGameButton() => GameManager.instance.RestartScene();
+
+    public void LoadData(GameData _data)
+    {
+        if (volumeSettings.Length > 0)
+        {
+            for (int i = 0; i < volumeSettings.Length; i++)
+            {
+                if (_data.volumeSettings.TryGetValue(volumeSettings[i].parameter, out float value))
+                    volumeSettings[i].LoadSlider(value);
+            }
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.volumeSettings.Clear();
+
+        foreach (UI_VolumeSlider item in volumeSettings)
+        {
+            _data.volumeSettings.Add(item.parameter, item.slider.value);
+        }
+    }
 }

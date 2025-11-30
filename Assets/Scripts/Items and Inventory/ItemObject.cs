@@ -49,6 +49,7 @@ public class ItemObject : MonoBehaviour
             return;
         }
 
+        AudioManager.instance.PlaySFX(18);
         Inventory.instance.AddItem(itemData);                                   // 加入背包
         Destroy(gameObject);                                                    // 销毁场景里的物体
     }

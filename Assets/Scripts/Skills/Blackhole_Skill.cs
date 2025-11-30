@@ -57,6 +57,8 @@ public class Blackhole_Skill : Skill
         currentBlackhole = newBlackhole.GetComponent<Blackhole_Skill_Controller>();
         // 设置黑洞参数
         currentBlackhole.SetupBlackhole(maxSize, growSpeed, shrinkSpeed, amountOfAttacks, cloneAttackCooldown, blackholeDuration);
+        AudioManager.instance.PlaySFX(3);
+        AudioManager.instance.PlaySFX(6);
     }
 
     // 检查技能是否已完成
