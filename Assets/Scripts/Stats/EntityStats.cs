@@ -53,6 +53,7 @@ public class EntityStats : MonoBehaviour
 
     public System.Action onHealthChanged;                                           // 
     public bool isDead { get; private set; }
+    public bool isInvincible { get; private set; }
     private bool isVulnerable;
 
     private void Awake()
@@ -179,6 +180,8 @@ public class EntityStats : MonoBehaviour
     // 受到伤害
     public virtual void TakeDamage(float _damage)
     {
+        if (isInvincible) return;
+
         DecreaseHealthBy(_damage);
         GetComponent<Entity>().DamageImpact();
         fx.StartCoroutine("FlashFX");
@@ -194,6 +197,8 @@ public class EntityStats : MonoBehaviour
         // 是否能闪避攻击
         if (TargetCanAvoidAttack(_targetStats))
             return;
+
+        _targetStats.GetComponent<Entity>().SetupKnockbackDir(transform);
 
         float totalDamage = damage.GetValue() + strength.GetValue();                  // 总伤害值
         // 如果暴击，总伤害值改成暴击后的伤害
@@ -305,6 +310,17 @@ public class EntityStats : MonoBehaviour
     protected virtual void Die()
     {
         isDead = true;
+    }
+
+    public void KillEntity()
+    {
+        if (!isDead)
+            Die();
+    }
+
+    public void SetInvincible(bool _invincible)
+    {
+        isInvincible = _invincible;
     }
 
     public Stat GetStat(StatType _statType)

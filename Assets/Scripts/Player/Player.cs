@@ -79,6 +79,7 @@ public class Player : Entity
     
     protected override void Update()
     {
+        if (Time.timeScale == 0) return;
         base.Update();
 
         stateMachine.currentState.Update();                                     // 更新当前状态
@@ -162,6 +163,11 @@ public class Player : Entity
         moveSpeed = defaultMoveSpeed;
         jumpForce = defaultJumpForce;
         dashSpeed = defaultDashSpeed;
+    }
+
+    protected override void SetupZeroKnockbackPower()
+    {
+        knockbackPower = new Vector2(0, 0);
     }
 
     // 死亡，进入死亡状态

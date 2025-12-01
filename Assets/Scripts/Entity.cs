@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour
     #endregion
 
     [Header("Knockback info")]
-    [SerializeField] protected Vector2 knockbackDirection;                          // 击退方向
+    [SerializeField] protected Vector2 knockbackPower;                          // 击退方向
     [SerializeField] protected float knockbackDuration;                             // 击退持续时间
     protected bool isKnocked;                                                       // 是否被击退
 
@@ -27,6 +27,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float wallCheckDistance;                             // 墙面检测距离
     [SerializeField] protected LayerMask whatIsGround;                              // 地面图层
 
+    public int knockbackDir { get; private set; }
     public int facingDir { get; private set; } = 1;                                 // 朝向
     protected bool facingRight = true;
 
@@ -59,13 +60,29 @@ public class Entity : MonoBehaviour
         Debug.Log(gameObject.name + " is damaged");
     }
 
+    public virtual void SetupKnockbackDir(Transform _damageDirection)
+    {
+        if (_damageDirection.position.x > transform.position.x)
+            knockbackDir = -1;
+        else
+            knockbackDir = 1;
+    }
+
     // 被击退效果
     protected virtual IEnumerator HitKnockback()
     {
         isKnocked = true;
-        rb.velocity = new Vector2(knockbackDirection.x * -facingDir, knockbackDirection.y);
+        rb.velocity = new Vector2(knockbackPower.x * knockbackDir, knockbackPower.y);
         yield return new WaitForSeconds(knockbackDuration);
         isKnocked = false;
+        SetupZeroKnockbackPower();
+    }
+
+    public void SetupKnockbackPower(Vector2 _knockbackPower) => knockbackPower = _knockbackPower;
+
+    protected virtual void SetupZeroKnockbackPower()
+    {
+
     }
 
     #region Velocity

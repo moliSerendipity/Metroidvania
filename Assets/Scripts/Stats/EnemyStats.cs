@@ -75,5 +75,6 @@ public class EnemyStats : EntityStats
         enemy.Die();                                                                // 进入死亡状态
         PlayerManager.instance.currency += (int)soulsDropAmount.GetValue();
         myDropSystem.GenerateDrop();                                                // 掉落物品
+        Destroy(gameObject, 5f);                                                    // 5秒后销毁敌人对象
     }
 }

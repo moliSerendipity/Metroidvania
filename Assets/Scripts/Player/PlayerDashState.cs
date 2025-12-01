@@ -14,6 +14,7 @@ public class PlayerDashState : PlayerState
 
         player.skill.dash.CloneOnDash();                                            // 冲刺开始时是否留下残影
         stateTimer = player.dashDuration;                                           // 设置玩家冲刺的持续时间
+        player.stats.SetInvincible(true);                                           // 冲刺时无敌
     }
 
     public override void Exit()
@@ -22,6 +23,7 @@ public class PlayerDashState : PlayerState
 
         player.skill.dash.CloneOnArrival();                                         // 冲刺结束时是否留下残影
         player.SetVelocity(0, rb.velocity.y);                                       // 设置玩家的横向速度为0，防止冲刺结束后继续滑行
+        player.stats.SetInvincible(false);                                          // 取消无敌状态
     }
 
     public override void Update()

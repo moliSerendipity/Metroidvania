@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour, ISaveManager
 {
@@ -109,5 +110,13 @@ public class GameManager : MonoBehaviour, ISaveManager
             }
         }
         return closestCheckpoint;
+    }
+
+    public void PauseGame(bool _pause)
+    {
+        if (_pause)
+            Time.timeScale = 0f;
+        else
+            Time.timeScale = 1f;
     }
 }

@@ -23,6 +23,8 @@ public class Enemy : Entity
     [Header("Attack info")]
     public float attackDistance;
     public float attackCooldown;                                                    // ¹¥»÷CD
+    public float minAttackCooldown;                                                    // ¹¥»÷CD
+    public float maxAttackCooldown;                                                    // ¹¥»÷CD
     [HideInInspector] public float lastTimeAttacked;                                // ÉÏ´Î¹¥»÷½áÊøÊ±¼ä
 
     public EnemyStateMachine stateMachine { get; private set; }

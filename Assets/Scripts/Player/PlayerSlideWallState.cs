@@ -42,7 +42,7 @@ public class PlayerSlideWallState : PlayerState
         if (player.IsGroundDetected())
             stateMachine.ChangeState(player.idleState);
 
-        // 如果未检测到墙壁且未触地，改变状态为airState下降（教程没加）
+        // 如果未检测到墙壁且未触地，改变状态为airState下降
         if (!player.IsWallDetected())
             stateMachine.ChangeState(player.airState);
     }

@@ -76,6 +76,14 @@ public class UI : MonoBehaviour, ISaveManager
             _menu.SetActive(true);
             AudioManager.instance.PlaySFX(7);
         }
+
+        if (GameManager.instance != null && _menu != null)
+        {
+            if (_menu == inGameUI)
+                GameManager.instance.PauseGame(false);
+            else
+                GameManager.instance.PauseGame(true);
+        }
     }
 
     /// <summary>
