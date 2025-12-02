@@ -253,6 +253,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         cd.enabled = false;                                                     // 禁用碰撞器组件
         rb.isKinematic = true;                                                  // rb的body type设置为Kinematic
         rb.constraints = RigidbodyConstraints2D.FreezeAll;                      // 冻结xyz轴
+        GetComponentInChildren<ParticleSystem>().Play();
 
         // 如果剑在弹射，就继续播放剑的旋转动画，不让该剑成为碰撞物体的子物体
         if (isBouncing && enemyTarget.Count >0)

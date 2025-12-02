@@ -198,15 +198,20 @@ public class EntityStats : MonoBehaviour
         if (TargetCanAvoidAttack(_targetStats))
             return;
 
+        bool criticalStrike = false;
         _targetStats.GetComponent<Entity>().SetupKnockbackDir(transform);
 
         float totalDamage = damage.GetValue() + strength.GetValue();                  // 总伤害值
         // 如果暴击，总伤害值改成暴击后的伤害
         if (CanCrit())
+        {
             totalDamage = CalculateCriticalDamage(totalDamage);
+            criticalStrike = true;
+        }
         // 总伤害值如果低于被攻击对象护甲，则只造成5%的伤害，否则最终伤害为总伤害值-被攻击对象护甲值
         totalDamage = (totalDamage > _targetStats.armor.GetValue()) ? totalDamage - _targetStats.armor.GetValue() : totalDamage * 0.05f;
         _targetStats.TakeDamage(totalDamage);                                       // 被攻击对象受伤
+        fx.CreateHitFX(_targetStats.transform, criticalStrike);
 
         DoMagicDamage(_targetStats);
     }

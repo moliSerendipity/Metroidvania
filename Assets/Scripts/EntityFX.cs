@@ -12,9 +12,21 @@ public class EntityFX : MonoBehaviour
     private Material originalMat;                                               // Ô­Ê¼²ÄÖÊ
 
     [Header("Ailment colors")]
-    [SerializeField] private Color[] chillColor;
     [SerializeField] private Color[] igniteColor;
+    [SerializeField] private Color[] chillColor;
     [SerializeField] private Color[] shockColor;
+
+    [Header("Ailment particles")]
+    [SerializeField] private ParticleSystem igniteFX;
+    [SerializeField] private ParticleSystem chillFX;
+    [SerializeField] private ParticleSystem shockFX;
+
+    [Header("Hit fx")]
+    [SerializeField] private GameObject hitFX;
+    [SerializeField] private GameObject criticalHitFX;
+
+    [Space]
+    [SerializeField] private ParticleSystem dustFX;
 
     private void Start()
     {
@@ -56,20 +68,10 @@ public class EntityFX : MonoBehaviour
     {
         CancelInvoke();
         sr.color = Color.white;
-    }
 
-    private void ChillColorFX()
-    {
-        if (sr.color != chillColor[0])
-            sr.color = chillColor[0];
-        else
-            sr.color = chillColor[1];
-    }
-
-    public void ChillFXFor(float _seconds)
-    {
-        InvokeRepeating("ChillColorFX", 0, 0.3f);
-        Invoke("CancelColorChange", _seconds);
+        igniteFX.Stop();
+        chillFX.Stop();
+        shockFX.Stop();
     }
 
     private void IgniteColorFX()
@@ -82,7 +84,23 @@ public class EntityFX : MonoBehaviour
 
     public void IgniteFXFor(float _seconds)
     {
+        igniteFX.Play();
         InvokeRepeating("IgniteColorFX", 0, 0.3f);
+        Invoke("CancelColorChange", _seconds);
+    }
+
+    private void ChillColorFX()
+    {
+        if (sr.color != chillColor[0])
+            sr.color = chillColor[0];
+        else
+            sr.color = chillColor[1];
+    }
+
+    public void ChillFXFor(float _seconds)
+    {
+        chillFX.Play();
+        InvokeRepeating("ChillColorFX", 0, 0.3f);
         Invoke("CancelColorChange", _seconds);
     }
 
@@ -96,7 +114,37 @@ public class EntityFX : MonoBehaviour
 
     public void ShockFXFor(float _seconds)
     {
+        shockFX.Play();
         InvokeRepeating("ShockColorFX", 0, 0.3f);
         Invoke("CancelColorChange", _seconds);
+    }
+
+    public void CreateHitFX(Transform _target, bool _critical)
+    {
+        float zRotation = Random.Range(-90, 90);
+        float xPosition = Random.Range(-0.5f, 0.5f);
+        float yPosition = Random.Range(-0.5f, 0.5f);
+        Vector3 hitFXRotation = new Vector3(0, 0, zRotation);
+
+        GameObject hitPrefab = hitFX;
+        if (_critical)
+        {
+            hitPrefab = criticalHitFX;
+            float yRotation = 0;
+            zRotation = Random.Range(-45, 45);
+            if (GetComponent<Entity>().facingDir == -1)
+                yRotation = 180;
+            hitFXRotation = new Vector3(0, yRotation, zRotation);
+        }
+
+        GameObject newHitFX = Instantiate(hitPrefab, _target.position + new Vector3(xPosition, yPosition), Quaternion.identity);
+        newHitFX.transform.Rotate(hitFXRotation);
+
+        Destroy(newHitFX, 0.5f);
+    }
+
+    public void PlayDustFX()
+    {
+        dustFX?.Play();
     }
 }
