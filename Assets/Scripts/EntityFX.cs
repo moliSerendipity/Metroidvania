@@ -11,7 +11,8 @@ public class EntityFX : MonoBehaviour
     [Header("Screen shake fx")]
     private CinemachineImpulseSource screenShake;
     [SerializeField] private float shakeMultiplier;
-    [SerializeField] private Vector3 shakePower;
+    public Vector3 shakeSwordImpact;
+    public Vector3 shakeHighDamage;
 
     [Header("After image fx")]
     [SerializeField] private GameObject afterImagePrefab;                       // ²ÐÓ°Ô¤ÖÆÌå
@@ -65,9 +66,10 @@ public class EntityFX : MonoBehaviour
         }
     }
 
-    public void ScreenShake()
+    public void ScreenShake(Vector3 _shakePower)
     {
-        screenShake.m_DefaultVelocity = new Vector3(shakePower.x * player.facingDir, shakePower.y) * shakeMultiplier;
+        if (screenShake  == null) return;
+        screenShake.m_DefaultVelocity = new Vector3(_shakePower.x * player.facingDir, _shakePower.y) * shakeMultiplier;
         screenShake.GenerateImpulse();
     }
 
@@ -174,7 +176,7 @@ public class EntityFX : MonoBehaviour
             hitFXRotation = new Vector3(0, yRotation, zRotation);
         }
 
-        GameObject newHitFX = Instantiate(hitPrefab, _target.position + new Vector3(xPosition, yPosition), Quaternion.identity);
+        GameObject newHitFX = Instantiate(hitPrefab, _target.position + new Vector3(xPosition, yPosition), Quaternion.identity, _target);
         newHitFX.transform.Rotate(hitFXRotation);
 
         Destroy(newHitFX, 0.5f);

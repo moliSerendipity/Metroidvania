@@ -15,7 +15,7 @@ public class PlayerCatchSwordState : PlayerState
         base.Enter();
 
         player.fx.PlayDustFX();
-        player.fx.ScreenShake();
+        player.fx.ScreenShake(player.fx.shakeSwordImpact);
         sword = player.sword.transform;
         // 回收时面对剑的位置
         if (sword.position.x > player.transform.position.x && player.facingDir == -1)
