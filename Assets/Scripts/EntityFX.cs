@@ -1,12 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class EntityFX : MonoBehaviour
 {
     private SpriteRenderer sr;
+    private Player player;
 
-    [Header("Flash FX")]
+    [Header("Screen shake fx")]
+    private CinemachineImpulseSource screenShake;
+    [SerializeField] private float shakeMultiplier;
+    [SerializeField] private Vector3 shakePower;
+
+    [Header("After image fx")]
+    [SerializeField] private GameObject afterImagePrefab;                       // 残影预制体
+    [SerializeField] private float colorLoseRate;                               // 颜色衰减速率
+    [SerializeField] private float afterImageCooldown;
+    private float afterImageCooldownTimer;
+
+    [Header("Flash fx")]
     [SerializeField] private float flashDuration;                               // 闪烁持续时间
     [SerializeField] private Material hitMat;                                   // 被击中时表现的材质
     private Material originalMat;                                               // 原始材质
@@ -31,7 +44,31 @@ public class EntityFX : MonoBehaviour
     private void Start()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
+        player = PlayerManager.instance.player;
+        screenShake = GetComponent<CinemachineImpulseSource>();
         originalMat = sr.material;
+    }
+
+    private void Update()
+    {
+        afterImageCooldownTimer -= Time.deltaTime;
+    }
+
+    public void CreateAfterImage()
+    {
+        if (afterImageCooldownTimer <= 0f)
+        {
+            afterImageCooldownTimer = afterImageCooldown;
+            GameObject newAfterImage = Instantiate(afterImagePrefab, transform.position, transform.rotation);
+            newAfterImage.GetComponent<AfterImageFX>().SetupAfterImage(colorLoseRate, sr.sprite);
+
+        }
+    }
+
+    public void ScreenShake()
+    {
+        screenShake.m_DefaultVelocity = new Vector3(shakePower.x * player.facingDir, shakePower.y) * shakeMultiplier;
+        screenShake.GenerateImpulse();
     }
 
     // 是否透明

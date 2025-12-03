@@ -38,5 +38,6 @@ public class PlayerDashState : PlayerState
         // 如果冲刺结束，则改变状态为idleState
         if (stateTimer < 0)
             stateMachine.ChangeState(player.idleState);
+        player.fx.CreateAfterImage();
     }
 }
