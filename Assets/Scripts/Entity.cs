@@ -7,7 +7,6 @@ public class Entity : MonoBehaviour
     #region Components
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
-    public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
     public EntityStats stats { get; private set; }
     public CapsuleCollider2D cd { get; private set; }
@@ -36,7 +35,6 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
-        fx = GetComponent<EntityFX>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -136,6 +134,13 @@ public class Entity : MonoBehaviour
             Flip();
         else if (_x < 0 && facingRight)
             Flip();
+    }
+
+    public virtual void SetupDefaultFacingDir(int _direction)
+    {
+        facingDir = _direction;
+        if (facingDir == -1)
+            facingRight = false;
     }
     #endregion
 

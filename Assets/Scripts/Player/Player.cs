@@ -26,6 +26,7 @@ public class Player : Entity
 
     public SkillManager skill { get; private set; }                             // 技能管理器
     public GameObject sword { get; private set; }                               // 游戏物体，剑
+    public PlayerFX fx { get; private set; }                                    // 玩家特效脚本
 
     #region States
     public PlayerStateMachine stateMachine {  get; private set; }
@@ -48,6 +49,7 @@ public class Player : Entity
     {
         base.Awake();
 
+        fx = GetComponent<PlayerFX>();                                         // 获取玩家特效脚本
         // 初始化状态机和状态
         stateMachine = new PlayerStateMachine();
         idleState = new PlayerIdleState(this, stateMachine, "Idle");

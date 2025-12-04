@@ -4,6 +4,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(EnemyStats))]
+[RequireComponent(typeof(EntityFX))]
+[RequireComponent(typeof(ItemDrop))]
 public class Enemy : Entity
 {
     [SerializeField] protected LayerMask whatIsPlayer;                              // 玩家图层
@@ -28,12 +33,14 @@ public class Enemy : Entity
     [HideInInspector] public float lastTimeAttacked;                                // 上次攻击结束时间
 
     public EnemyStateMachine stateMachine { get; private set; }
+    public EntityFX fx { get; private set; }
     public string lastAnimBoolName { get; private set; }                            // 上次动画布尔参数名
 
     protected override void Awake()
     {
         base.Awake();
 
+        fx = GetComponent<EntityFX>();
         defaultMoveSpeed = moveSpeed;
         // 初始化状态机
         stateMachine = new EnemyStateMachine();

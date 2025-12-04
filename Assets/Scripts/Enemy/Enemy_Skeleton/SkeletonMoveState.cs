@@ -29,6 +29,5 @@ public class SkeletonMoveState : SkeletonGroundedState
             enemy.Flip();
             stateMachine.ChangeState(enemy.idleState);
         }
-
     }
 }

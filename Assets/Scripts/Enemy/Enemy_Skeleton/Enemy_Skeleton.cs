@@ -13,6 +13,7 @@ public class Enemy_Skeleton : Enemy
     public SkeletonStunnedState stunnedState { get; private set; }
     public SkeletonDeadState deadState { get; private set; }
     #endregion
+
     protected override void Awake()
     {
         base.Awake();
@@ -30,14 +31,6 @@ public class Enemy_Skeleton : Enemy
         base.Start();
 
         stateMachine.Initialize(idleState);                                         // 初始化状态机，进入初始状态
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        //if(Input.GetKeyDown(KeyCode.U))
-        //    stateMachine.ChangeState(stunnedState);
     }
 
     // 是否可以被击晕

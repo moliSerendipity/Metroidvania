@@ -15185,9 +15185,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6434684376485488825}
-  - component: {fileID: 1303896571551555736}
   - component: {fileID: 4496151517542831918}
   - component: {fileID: 2002343890804348969}
+  - component: {fileID: 1303896571551555736}
   - component: {fileID: 8874763841446647517}
   - component: {fileID: 3458157762965196207}
   - component: {fileID: 9088543537665982806}
@@ -15222,43 +15222,6 @@ Transform:
   - {fileID: 384978488891480006}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1303896571551555736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9178193100482769431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1f28854439c0554484aa80c3fe63a25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knockbackPower: {x: 7, y: 12}
-  knockbackDuration: 0.07
-  attackCheck: {fileID: 6406823556499676559}
-  attackCheckRadius: 1.2
-  groundCheck: {fileID: 855529275686111260}
-  groundCheckDistance: 1
-  wallCheck: {fileID: 1169789824414949526}
-  wallCheckDistance: 0.8
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 8
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 64
-  stunDuration: 1
-  stunDirection: {x: 10, y: 12}
-  counterImage: {fileID: 5321571707340836265}
-  moveSpeed: 1.5
-  idleTime: 1
-  battleTime: 7
-  attackDistance: 2
-  attackCooldown: 0.4
-  minAttackCooldown: 0.35
-  maxAttackCooldown: 0.55
-  lastTimeAttacked: 0
 --- !u!70 &4496151517542831918
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -15321,6 +15284,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &1303896571551555736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178193100482769431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f28854439c0554484aa80c3fe63a25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackPower: {x: 7, y: 12}
+  knockbackDuration: 0.07
+  attackCheck: {fileID: 6406823556499676559}
+  attackCheckRadius: 1.2
+  groundCheck: {fileID: 855529275686111260}
+  groundCheckDistance: 1
+  wallCheck: {fileID: 1169789824414949526}
+  wallCheckDistance: 0.8
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
+  stunDuration: 1
+  stunDirection: {x: 10, y: 12}
+  counterImage: {fileID: 5321571707340836265}
+  moveSpeed: 1.5
+  idleTime: 1
+  battleTime: 7
+  attackDistance: 2
+  attackCooldown: 0.4
+  minAttackCooldown: 0.35
+  maxAttackCooldown: 0.55
+  lastTimeAttacked: 0
 --- !u!114 &8874763841446647517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15333,6 +15333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4e1f9a02538e14cb6976bd78d5f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popUpTextPrefab: {fileID: 0}
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 77126b8c62dece745a9e81fa4f9c173b, type: 2}
   igniteColor:
@@ -15347,6 +15348,8 @@ MonoBehaviour:
   igniteFX: {fileID: 3712418919205161506}
   chillFX: {fileID: 259320635301762352}
   shockFX: {fileID: 7474791511479808629}
+  hitFX: {fileID: 0}
+  criticalHitFX: {fileID: 0}
 --- !u!114 &3458157762965196207
 MonoBehaviour:
   m_ObjectHideFlags: 0

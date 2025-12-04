@@ -174,6 +174,8 @@ public class EntityStats : MonoBehaviour
             _damage *= 1.2f;
 
         currentHealth -= _damage;
+        if (_damage > 0 && GetComponent<Player>() == null)
+            fx.CreatePopUpText(_damage.ToString());
         onHealthChanged?.Invoke();                                                  // ÑªÌõ UI ¸üÐÂ
     }
 

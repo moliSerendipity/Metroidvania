@@ -24,8 +24,15 @@ public class PlayerGroundedState : PlayerState
         base.Update();
 
         // 当按下R键时，将状态机切换到player.blackhole状态
-        if (Input.GetKeyDown(KeyCode.R) && player.skill.blackhole.blackholeUnlocked && player.skill.blackhole.cooldownTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.R) && player.skill.blackhole.blackholeUnlocked)
+        {
+            if (player.skill.blackhole.cooldownTimer > 0)
+            {
+                player.fx.CreatePopUpText("Cooldown");
+                return;
+            }
             stateMachine.ChangeState(player.blackhole);
+        }
 
         // 当按下鼠标右键且未丢出剑时，将状态机切换到player.aimSword状态，HasNoSword()可以回收剑
         if (Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword() && player.skill.sword.swordUnlocked)
