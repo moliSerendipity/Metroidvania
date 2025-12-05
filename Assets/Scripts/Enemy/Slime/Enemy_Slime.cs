@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SlimeType
+{
+    Big,
+    Medium,
+    Small
+}
+
 public class Enemy_Slime : Enemy
 {
     #region States
@@ -12,6 +19,13 @@ public class Enemy_Slime : Enemy
     public SlimeStunnedState stunnedState { get; private set; }
     public SlimeDeadState deadState { get; private set; }
     #endregion
+
+    [Header("Slime specific")]
+    [SerializeField] private SlimeType slimeType;
+    [SerializeField] private int slimesToCreateOnDeath;
+    [SerializeField] private GameObject slimePrefab;
+    [SerializeField] private Vector2 minCreationVelocity;
+    [SerializeField] private Vector2 maxCreationVelocity;
 
     protected override void Awake()
     {
@@ -50,5 +64,31 @@ public class Enemy_Slime : Enemy
         base.Die();
 
         stateMachine.ChangeState(deadState);
+        if (slimeType == SlimeType.Small) return;
+
+        CreateSlimes(slimesToCreateOnDeath, slimePrefab);
     }
+
+    private void CreateSlimes(int _amountOfSlimes, GameObject _slimePrefab)
+    {
+        for (int i = 0; i < _amountOfSlimes; i++)
+        {
+            GameObject newSlime = Instantiate(_slimePrefab, transform.position, Quaternion.identity);
+            newSlime.GetComponent<Enemy_Slime>().SetupSlime(facingDir);
+        }
+    }
+
+    public void SetupSlime(int _facingDir)
+    {
+        if (_facingDir != facingDir)
+            Flip();
+
+        float xVelocity = Random.Range(minCreationVelocity.x, maxCreationVelocity.x);
+        float yVelocity = Random.Range(minCreationVelocity.y, maxCreationVelocity.y);
+        isKnocked = true;
+        GetComponent<Rigidbody2D>().velocity = new Vector2(xVelocity * -facingDir, yVelocity);
+        Invoke("CancelKnockback", 1.5f);
+    }
+
+    private void CancelKnockback() => isKnocked = false;
 }

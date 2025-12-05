@@ -25,6 +25,8 @@ public class SlimeBattleState : EnemyState
     public override void Exit()
     {
         base.Exit();
+
+        enemy.anim.SetBool("Idle", false);
     }
 
     public override void Update()
@@ -37,14 +39,20 @@ public class SlimeBattleState : EnemyState
             if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
             {
                 if (CanAttack())                                            // 如果玩家进入攻击范围并可以攻击，怪物就进入攻击状态
+                {
                     stateMachine.ChangeState(enemy.attackState);
+                    return;
+                }
             }
         }
         else
         {
             // 如果战斗时间结束或距离过大，怪物就进入静止状态
             if (stateTimer < 0 || Vector2.Distance(player.position, enemy.transform.position) > 15)
+            {
                 stateMachine.ChangeState(enemy.idleState);
+                return;
+            }
         }
 
         // 朝着玩家方向移动
@@ -52,6 +60,14 @@ public class SlimeBattleState : EnemyState
             moveDir = 1;
         else if (player.position.x < enemy.transform.position.x - 0.1f)
             moveDir = -1;
+        if (enemy.IsPlayerDetected() && enemy.IsPlayerDetected().distance < enemy.attackDistance - 0.1f)
+        {
+            enemy.anim.SetBool("Move", false);
+            enemy.anim.SetBool("Idle", true);
+            return;
+        }
+        enemy.anim.SetBool("Move", true);
+        enemy.anim.SetBool("Idle", false);
         enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
     }
 

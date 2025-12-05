@@ -26,6 +26,7 @@ public class Enemy : Entity
     private float defaultMoveSpeed;                                                 // 初始移动速度
 
     [Header("Attack info")]
+    public float agroDistance = 2;
     public float attackDistance;
     public float attackCooldown;                                                    // 攻击CD
     public float minAttackCooldown;                                                    // 攻击CD

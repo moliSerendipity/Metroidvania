@@ -24,12 +24,19 @@ public class SlimeStunnedState : EnemyState
     {
         base.Exit();
 
-        enemy.fx.Invoke("CancelColorChange", 0);                                    // 取消闪烁并变回原来的颜色
+        enemy.stats.SetInvincible(false);
     }
 
     public override void Update()
     {
         base.Update();
+
+        if (rb.velocity.y < 0.1f && enemy.IsGroundDetected())
+        {
+            enemy.fx.Invoke("CancelColorChange", 0);                                    // 取消闪烁并变回原来的颜色
+            enemy.anim.SetTrigger("StunFold");
+            enemy.stats.SetInvincible(true);
+        }
 
         if (stateTimer < 0)                                                         // 眩晕结束后回到静止状态
             stateMachine.ChangeState(enemy.idleState);

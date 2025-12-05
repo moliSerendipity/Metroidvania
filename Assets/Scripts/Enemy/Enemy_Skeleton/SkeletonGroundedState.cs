@@ -30,7 +30,7 @@ public class SkeletonGroundedState : EnemyState
         base.Update();
 
         // 检测到玩家或距离过小时进入战斗状态
-        if (enemy.IsPlayerDetected() || Vector2.Distance(enemy.transform.position, player.position) < 2)
+        if (enemy.IsPlayerDetected() || Vector2.Distance(enemy.transform.position, player.position) < enemy.agroDistance)
             stateMachine.ChangeState(enemy.battleState);
     }
 }

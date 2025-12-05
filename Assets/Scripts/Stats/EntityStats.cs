@@ -197,8 +197,8 @@ public class EntityStats : MonoBehaviour
     public virtual void DoDamage(EntityStats _targetStats)
     {
         // ÊÇ·ñÄÜÉÁ±Ü¹¥»÷
-        if (TargetCanAvoidAttack(_targetStats))
-            return;
+        if (TargetCanAvoidAttack(_targetStats)) return;
+        if (_targetStats.isInvincible) return;
 
         bool criticalStrike = false;
         _targetStats.GetComponent<Entity>().SetupKnockbackDir(transform);
