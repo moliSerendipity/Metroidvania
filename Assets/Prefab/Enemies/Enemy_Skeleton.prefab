@@ -5013,7 +5013,7 @@ RectTransform:
   m_Father: {fileID: 925937191962915043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -15197,7 +15197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6434684376485488825
 Transform:
   m_ObjectHideFlags: 0
@@ -15335,7 +15335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4e1f9a02538e14cb6976bd78d5f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popUpTextPrefab: {fileID: 0}
+  popUpTextPrefab: {fileID: 5480605508757994471, guid: 33490effe1909c94e8985ad34b3416ce, type: 3}
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 77126b8c62dece745a9e81fa4f9c173b, type: 2}
   igniteColor:
@@ -15350,8 +15350,8 @@ MonoBehaviour:
   igniteFX: {fileID: 3712418919205161506}
   chillFX: {fileID: 259320635301762352}
   shockFX: {fileID: 7474791511479808629}
-  hitFX: {fileID: 0}
-  criticalHitFX: {fileID: 0}
+  hitFX: {fileID: 2386641643975317693, guid: 40ab15be44f42bf479104f0119bd4e6f, type: 3}
+  criticalHitFX: {fileID: 6484345625327907605, guid: 447d4d7d4882f01479f446928eab342a, type: 3}
 --- !u!114 &3458157762965196207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15416,7 +15416,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   level: 1
-  percentageModifier: 1
+  percentageModifier: 0.4
 --- !u!114 &9088543537665982806
 MonoBehaviour:
   m_ObjectHideFlags: 0

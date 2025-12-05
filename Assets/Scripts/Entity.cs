@@ -13,18 +13,18 @@ public class Entity : MonoBehaviour
     #endregion
 
     [Header("Knockback info")]
-    [SerializeField] protected Vector2 knockbackPower;                              // »÷ÍË·½Ïò
-    [SerializeField] protected Vector2 knockbackOffset;
-    [SerializeField] protected float knockbackDuration;                             // »÷ÍË³ÖÐøÊ±¼ä
+    [SerializeField] protected Vector2 knockbackPower = new Vector2(7, 12);         // »÷ÍË·½Ïò
+    [SerializeField] protected Vector2 knockbackOffset = new Vector2(0.5f, 2);
+    [SerializeField] protected float knockbackDuration = 0.07f;                     // »÷ÍË³ÖÐøÊ±¼ä
     protected bool isKnocked;                                                       // ÊÇ·ñ±»»÷ÍË
 
     [Header("Collision info")]
     public Transform attackCheck;                                                   // ¹¥»÷¼ì²â·¶Î§
-    public float attackCheckRadius;                                                 // ¹¥»÷¼ì²â·¶Î§°ë¾¶
+    public float attackCheckRadius = 1.2f;                                          // ¹¥»÷¼ì²â·¶Î§°ë¾¶
     [SerializeField] protected Transform groundCheck;                               // µØÃæ¼ì²âµã
-    [SerializeField] protected float groundCheckDistance;                           // µØÃæ¼ì²â¾àÀë
+    [SerializeField] protected float groundCheckDistance = 1;                       // µØÃæ¼ì²â¾àÀë
     [SerializeField] protected Transform wallCheck;                                 // Ç½Ãæ¼ì²âµã
-    [SerializeField] protected float wallCheckDistance;                             // Ç½Ãæ¼ì²â¾àÀë
+    [SerializeField] protected float wallCheckDistance = 0.8f;                      // Ç½Ãæ¼ì²â¾àÀë
     [SerializeField] protected LayerMask whatIsGround;                              // µØÃæÍ¼²ã
 
     public int knockbackDir { get; private set; }

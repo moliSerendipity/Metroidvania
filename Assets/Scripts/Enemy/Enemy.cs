@@ -14,23 +14,23 @@ public class Enemy : Entity
     [SerializeField] protected LayerMask whatIsPlayer;                              // 玩家图层
 
     [Header("Stunned info")]
-    public float stunDuration;                                                      // 晕眩持续时间
-    public Vector2 stunDirection;                                                   // 晕眩方向
+    public float stunDuration = 1;                                                  // 晕眩持续时间
+    public Vector2 stunDirection = new Vector2(10, 12);                             // 晕眩方向
     protected bool canBeStunned;                                                    // 是否可以被晕眩
     [SerializeField] protected GameObject counterImage;
 
     [Header("Move info")]
-    public float moveSpeed;                                                         // 移动速度
-    public float idleTime;                                                          // 静止时间
-    public float battleTime;                                                        // 进入战斗状态持续时间
+    public float moveSpeed = 1.5f;                                                  // 移动速度
+    public float idleTime = 1;                                                      // 静止时间
+    public float battleTime = 7;                                                    // 进入战斗状态持续时间
     private float defaultMoveSpeed;                                                 // 初始移动速度
 
     [Header("Attack info")]
     public float agroDistance = 2;
-    public float attackDistance;
+    public float attackDistance = 2;
     public float attackCooldown;                                                    // 攻击CD
-    public float minAttackCooldown;                                                    // 攻击CD
-    public float maxAttackCooldown;                                                    // 攻击CD
+    public float minAttackCooldown = 1;                                             // 攻击CD
+    public float maxAttackCooldown = 2;                                             // 攻击CD
     [HideInInspector] public float lastTimeAttacked;                                // 上次攻击结束时间
 
     public EnemyStateMachine stateMachine { get; private set; }
@@ -130,6 +130,11 @@ public class Enemy : Entity
 
     // 动画结束触发的事件
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
+
+    public virtual void AnimationSpecialAttackTrigger()
+    {
+        
+    }
 
     // 记录当前动画参数名
     public virtual void AssignLastAnimName(string _animBoolName)

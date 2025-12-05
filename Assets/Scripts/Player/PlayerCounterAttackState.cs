@@ -34,13 +34,18 @@ public class PlayerCounterAttackState : PlayerState
         // 遍历所有碰撞体
         foreach (Collider2D hit in colliders)
         {
+            if (hit.GetComponent<Arrow_Controller>() != null)
+            {
+                hit.GetComponent<Arrow_Controller>().FlipArrow();
+                SuccessfullyCounterAttack();
+            }
+
             // 如果碰撞体是敌人且能被击晕
             if (hit.GetComponent<Enemy>())
             {
                 if(hit.GetComponent<Enemy>().CanBeStunned())                        // 如果能被击晕就进入眩晕状态
                 {
-                    stateTimer = 10f;                                               // 给一个大值，避免反击成功动画没播完
-                    player.anim.SetBool("SuccessfulCounterAttack", true);           // 设置成功反击动画参数为true
+                    SuccessfullyCounterAttack();
                     player.skill.parry.UseSkill();                                  // 使用反击技能
                     if (canCreateClone)
                     {
@@ -55,5 +60,11 @@ public class PlayerCounterAttackState : PlayerState
         // 如果没反击成功（stateTimer的初值为counterAttackDuration）或反击成功（stateTimer为10），就进入静止状态
         if (stateTimer < 0 || triggerCalled)
             stateMachine.ChangeState(player.idleState);
+    }
+
+    private void SuccessfullyCounterAttack()
+    {
+        stateTimer = 10f;                                               // 给一个大值，避免反击成功动画没播完
+        player.anim.SetBool("SuccessfulCounterAttack", true);           // 设置成功反击动画参数为true
     }
 }
