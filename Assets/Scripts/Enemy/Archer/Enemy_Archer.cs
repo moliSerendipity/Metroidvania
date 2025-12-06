@@ -23,6 +23,10 @@ public class Enemy_Archer : Enemy
     public float safeJumpDistance;
     [HideInInspector] public float lastJumpTime;
 
+    [Header("Additional collision check")]
+    [SerializeField] private Transform groundBehindCheck;
+    [SerializeField] private Vector2 groundBehindCheckSize;
+
     protected override void Awake()
     {
         base.Awake();
@@ -61,11 +65,20 @@ public class Enemy_Archer : Enemy
         newArrow.GetComponent<Arrow_Controller>().SetupArrow(arrowSpeed * facingDir, stats);
     }
 
+    public bool GroundBehindCheck() => Physics2D.BoxCast(groundBehindCheck.position, groundBehindCheckSize, 0, Vector2.zero, 0, whatIsGround);
+    public bool WallBehindCheck() => Physics2D.Raycast(wallCheck.position, Vector2.right * -facingDir, wallCheckDistance + 2, whatIsGround);
+
     // À¿Õˆ£¨Ω¯»ÎÀ¿Õˆ◊¥Ã¨
     public override void Die()
     {
         base.Die();
 
         stateMachine.ChangeState(deadState);
+    }
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        Gizmos.DrawWireCube(groundBehindCheck.position, groundBehindCheckSize);
     }
 }

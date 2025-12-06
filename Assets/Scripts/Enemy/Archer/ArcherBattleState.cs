@@ -25,8 +25,6 @@ public class ArcherBattleState : EnemyState
     public override void Exit()
     {
         base.Exit();
-
-        //enemy.anim.SetBool("Idle", false);
     }
 
     public override void Update()
@@ -65,20 +63,16 @@ public class ArcherBattleState : EnemyState
             }
         }
 
-        // 朝着玩家方向移动
-        //if (player.position.x > enemy.transform.position.x + 0.1f)
-        //    moveDir = 1;
-        //else if (player.position.x < enemy.transform.position.x - 0.1f)
-        //    moveDir = -1;
-        //if (enemy.IsPlayerDetected() && enemy.IsPlayerDetected().distance < enemy.attackDistance - 0.1f)
-        //{
-        //    enemy.anim.SetBool("Move", false);
-        //    enemy.anim.SetBool("Idle", true);
-        //    return;
-        //}
-        //enemy.anim.SetBool("Move", true);
-        //enemy.anim.SetBool("Idle", false);
-        //enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
+        BattleStateFlipControll();
+    }
+
+    private void BattleStateFlipControll()
+    {
+        //朝着玩家方向
+        if (player.position.x > enemy.transform.position.x && enemy.facingDir == -1)
+            enemy.Flip();
+        else if (player.position.x < enemy.transform.position.x && enemy.facingDir == -1)
+            enemy.Flip();
     }
 
     // 判断是否可以攻击
@@ -96,6 +90,8 @@ public class ArcherBattleState : EnemyState
 
     private bool CanJump()
     {
+        if (enemy.GroundBehindCheck() == false || enemy.WallBehindCheck() == true) return false;
+
         if (Time.time >= enemy.lastJumpTime + enemy.jumpCooldown)
         {
             enemy.lastJumpTime = Time.time;

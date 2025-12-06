@@ -20,7 +20,7 @@ public class Enemy_Slime : Enemy
     public SlimeDeadState deadState { get; private set; }
     #endregion
 
-    [Header("Slime specific")]
+    [Header("Slime specific info")]
     [SerializeField] private SlimeType slimeType;
     [SerializeField] private int slimesToCreateOnDeath;
     [SerializeField] private GameObject slimePrefab;
