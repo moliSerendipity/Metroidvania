@@ -5,23 +5,20 @@ using UnityEngine.UI;
 
 public class UI_HealthBar : MonoBehaviour
 {
-    private Entity entity;
-    private EntityStats stats;
+    private Entity entity => GetComponentInParent<Entity>();
+    private EntityStats stats => GetComponentInParent<EntityStats>();
     private RectTransform myRectTransform;
     private Slider slider;
 
     private void Awake()
     {
-        entity = GetComponentInParent<Entity>();
-        stats = GetComponentInParent<EntityStats>();
         myRectTransform = GetComponentInParent<RectTransform>();
         slider = GetComponentInChildren<Slider>();
     }
 
     private void Start()
     {
-        entity.onFlipped += FlipUI;                                                 // 翻转事件添加FlipUI
-        stats.onHealthChanged += UpdateHealthUI;
+        UpdateHealthUI();
     }
 
     private void UpdateHealthUI()
@@ -36,9 +33,17 @@ public class UI_HealthBar : MonoBehaviour
         myRectTransform.Rotate(0, 180, 0);
     }
 
+    private void OnEnable()
+    {
+        entity.onFlipped += FlipUI;                                                 // 翻转事件添加FlipUI
+        stats.onHealthChanged += UpdateHealthUI;
+    }
+
     private void OnDisable()
     {
-        entity.onFlipped -= FlipUI;                                                 // 取消订阅事件
-        entity.stats.onHealthChanged -= UpdateHealthUI;
+        if (entity != null)
+            entity.onFlipped -= FlipUI;                                             // 取消订阅事件
+        if (stats != null)
+            stats.onHealthChanged -= UpdateHealthUI;
     }
 }

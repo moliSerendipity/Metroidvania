@@ -31,9 +31,12 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private GameObject hitFX;
     [SerializeField] private GameObject criticalHitFX;
 
+    private GameObject myHealthBar;
+
     protected virtual void Start()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
+        myHealthBar = GetComponentInChildren<UI_HealthBar>().gameObject;
         player = PlayerManager.instance.player;
         originalMat = sr.material;
     }
@@ -51,9 +54,15 @@ public class EntityFX : MonoBehaviour
     public void MakeTransparent(bool _transparent)
     {
         if (_transparent)
+        {
+            myHealthBar.SetActive(false);
             sr.color = Color.clear;
+        }
         else
+        {
+            myHealthBar.SetActive(true);
             sr.color = Color.white;
+        }
     }
 
     // 定义一个协程函数，用于实现闪烁效果
