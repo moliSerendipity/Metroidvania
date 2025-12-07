@@ -36,7 +36,7 @@ public class EntityFX : MonoBehaviour
     protected virtual void Start()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
-        myHealthBar = GetComponentInChildren<UI_HealthBar>().gameObject;
+        myHealthBar = GetComponentInChildren<UI_HealthBar>()?.gameObject;
         player = PlayerManager.instance.player;
         originalMat = sr.material;
     }
@@ -55,12 +55,12 @@ public class EntityFX : MonoBehaviour
     {
         if (_transparent)
         {
-            myHealthBar.SetActive(false);
+            myHealthBar?.SetActive(false);
             sr.color = Color.clear;
         }
         else
         {
-            myHealthBar.SetActive(true);
+            myHealthBar?.SetActive(true);
             sr.color = Color.white;
         }
     }

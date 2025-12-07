@@ -5,6 +5,7 @@ using UnityEngine;
 public class DeathBringerIdleState : EnemyState
 {
     private Enemy_DeathBringer enemy;
+    private Transform player;
 
     public DeathBringerIdleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_DeathBringer _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
     {
@@ -15,6 +16,7 @@ public class DeathBringerIdleState : EnemyState
     {
         base.Enter();
 
+        player = PlayerManager.instance.player.transform;
         stateTimer = enemy.idleTime;                                            // 设置敌人的静止时间
     }
 
@@ -27,8 +29,11 @@ public class DeathBringerIdleState : EnemyState
     {
         base.Update();
 
-        //if (stateTimer < 0)                                                     // 静止时间结束后开始移动
-            //stateMachine.ChangeState(enemy.moveState);
+        if (Vector2.Distance(player.transform.position, enemy.transform.position) < 7)
+            enemy.bossFightBegun = true;
+
+        if (stateTimer < 0 && enemy.bossFightBegun)
+            stateMachine.ChangeState(enemy.battleState);
 
     }
 }

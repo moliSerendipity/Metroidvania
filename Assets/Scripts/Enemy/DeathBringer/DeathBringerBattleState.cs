@@ -43,6 +43,11 @@ public class DeathBringerBattleState : EnemyState
                     stateMachine.ChangeState(enemy.attackState);
                     return;
                 }
+                else
+                {
+                    stateMachine.ChangeState(enemy.idleState);
+                    return;
+                }
             }
         }
 

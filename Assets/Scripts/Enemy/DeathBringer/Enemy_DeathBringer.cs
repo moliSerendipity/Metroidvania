@@ -13,6 +13,8 @@ public class Enemy_DeathBringer : Enemy
     public DeathBringerTeleportState teleportState { get; private set; }
     #endregion
 
+    public bool bossFightBegun;
+
     [Header("Teleport details")]
     [SerializeField] private BoxCollider2D arenaCollider;
     [SerializeField] private Vector2 surroundingCheckSize;
@@ -21,8 +23,11 @@ public class Enemy_DeathBringer : Enemy
 
     [Header("Spell cast details")]
     [SerializeField] private GameObject spellPrefab;
-    private float lastTimeSpellCast;
-    [SerializeField] private float spellCastCooldown;
+    public int amountOfSpells;
+    public float spellCastCooldown;
+    public float lastTimeSpellCast;
+    [SerializeField] private float spellCastStateCooldown;
+    [SerializeField] private Vector2 spellOffset;
 
     protected override void Awake()
     {
@@ -56,12 +61,23 @@ public class Enemy_DeathBringer : Enemy
 
     public bool CanSpellCast()
     {
-        if (Time.time >= lastTimeSpellCast + spellCastCooldown)
+        if (Time.time >= lastTimeSpellCast + spellCastStateCooldown)
         {
-            lastTimeSpellCast = Time.time;
             return true;
         }
         return false;
+    }
+
+    public void SpellCast()
+    {
+        Player player = PlayerManager.instance.player;
+        float xOffset = 0;
+        if (player.rb.velocity.x != 0)
+            xOffset = player.facingDir * spellOffset.x;
+        Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + spellOffset.y);
+
+        GameObject newSpell = Instantiate(spellPrefab, spellPosition, Quaternion.identity);
+        newSpell.GetComponent<DeathBringerSpell_Controller>().SetupSpell(stats);
     }
 
     public void FindPosition()
