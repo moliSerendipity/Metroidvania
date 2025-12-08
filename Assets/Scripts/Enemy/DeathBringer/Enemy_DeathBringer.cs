@@ -46,6 +46,7 @@ public class Enemy_DeathBringer : Enemy
     {
         base.Start();
 
+        arenaCollider = GameObject.FindGameObjectWithTag("ArenaCollider").GetComponent<BoxCollider2D>();
         stateMachine.Initialize(idleState);                                         // 初始化状态机，进入初始状态
     }
 

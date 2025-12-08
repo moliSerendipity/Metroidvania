@@ -46,9 +46,14 @@ public class DeathBringerSpellCastState : EnemyState
     {
         if (amountOfSpells > 0 && spellCastTimer < 0)
         {
-            amountOfSpells--;
-            spellCastTimer = enemy.spellCastCooldown;
-            return true;
+            if (PlayerManager.instance.player.GetComponent<PlayerStats>().isDead == false)
+            {   
+                amountOfSpells--;
+                spellCastTimer = enemy.spellCastCooldown;
+                return true;
+            }
+            else
+                stateMachine.ChangeState(enemy.teleportState);
         }
         return false;
     }

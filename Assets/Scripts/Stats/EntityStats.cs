@@ -5,7 +5,6 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
-// 数值、buff需要重新设计
 public class EntityStats : MonoBehaviour
 {
     private EntityFX fx;
@@ -155,7 +154,7 @@ public class EntityStats : MonoBehaviour
     // 暴击伤害
     protected float CalculateCriticalDamage(float _damage)
     {
-         return _damage * (critDamage.GetValue() + strength.GetValue());
+         return _damage * (critDamage.GetValue() + strength.GetValue() * 0.01f);
     }
 
     // 恢复生命值
@@ -215,7 +214,7 @@ public class EntityStats : MonoBehaviour
         _targetStats.TakeDamage(totalDamage);                                       // 被攻击对象受伤
         fx.CreateHitFX(_targetStats.transform, criticalStrike);
 
-        DoMagicDamage(_targetStats);
+        //DoMagicDamage(_targetStats);
     }
 
     // 攻击，对目标造成法伤
@@ -225,6 +224,8 @@ public class EntityStats : MonoBehaviour
         float _iceDamage = iceDamage.GetValue();
         float _lightningDamage = lightningDamage.GetValue();
 
+        if (Mathf.Max(_fireDamage, _iceDamage, _lightningDamage) <= 0) return;
+
         float totalMagicDamage = _fireDamage + _iceDamage + _lightningDamage + intelligence.GetValue();
         totalMagicDamage *= (1 - _targetStats.magicResistance.GetValue());
         _targetStats.TakeDamage(totalMagicDamage);
@@ -232,6 +233,14 @@ public class EntityStats : MonoBehaviour
         bool canApplyIgnite = _fireDamage > _iceDamage && _fireDamage > _lightningDamage;
         bool canApplyChill = _iceDamage > _fireDamage && _iceDamage > _lightningDamage;
         bool canApplyShock = _lightningDamage > _fireDamage && _lightningDamage > _iceDamage;
+
+        if (!canApplyIgnite && !canApplyChill && !canApplyShock)
+        {
+            if (_fireDamage >= _iceDamage && _fireDamage > 0)
+                canApplyIgnite = true;
+            else
+                canApplyChill = true;
+        }
         _targetStats.ApplyAilment(canApplyIgnite, canApplyChill, canApplyShock);
 
         if (canApplyIgnite)
@@ -250,15 +259,15 @@ public class EntityStats : MonoBehaviour
         if (_ignite && canApplyIgnite)
         {
             isIgnited = _ignite;
-            ignitedTimer = 4;
-            fx.IgniteFXFor(4);
+            ignitedTimer = ailmentDuration;
+            fx.IgniteFXFor(ailmentDuration);
         }
         if (_chill && canApplyChill)
         {
             isChilled = _chill;
-            chilledTimer = 4;
-            GetComponent<Entity>().SlowEntityBy(0.2f, 4);
-            fx.ChillFXFor(4);
+            chilledTimer = ailmentDuration;
+            GetComponent<Entity>().SlowEntityBy(0.2f, ailmentDuration);
+            fx.ChillFXFor(ailmentDuration);
         }
         if (_shock && canApplyShock)
         {
@@ -278,15 +287,17 @@ public class EntityStats : MonoBehaviour
 
     public void ApplyShock(bool _shock)
     {
+        if (isShocked) return;
+
         isShocked = _shock;
-        shockedTimer = 4;
-        fx.ShockFXFor(4);
+        shockedTimer = ailmentDuration;
+        fx.ShockFXFor(ailmentDuration);
     }
 
     private void HitNearestTargetWithShockStrike()
     {
         // 获取附近所有碰撞体
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 25f);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 15f);
         float closestDistance = Mathf.Infinity;                                     // 最近距离，初始值无穷大
         Transform closestEnemy = null;                                              // 最近敌人的坐标
         foreach (Collider2D hit in colliders)
