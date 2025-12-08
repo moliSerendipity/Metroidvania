@@ -102,7 +102,7 @@ public class Clone_Skill : Skill
         // 在实例化的克隆体上获取克隆体控制器脚本
         Clone_Skill_Controller newCloneScript = newClone.GetComponent<Clone_Skill_Controller>();
         // 设置克隆体参数
-        newCloneScript.SetupClone(_clonePosition, cloneDuration, canAttack, _offset, FindClosestEnemy(_clonePosition), canDuplicateClone, chanceToDuplicate, player, attackMultiplier);
+        newCloneScript.SetupClone(_clonePosition, cloneDuration, canAttack, _offset, canDuplicateClone, chanceToDuplicate, player, attackMultiplier);
     }
 
     // 是否在反击时创建克隆体

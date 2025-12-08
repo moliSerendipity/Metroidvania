@@ -13,16 +13,22 @@ public class Clone_Skill_Controller : MonoBehaviour
 
     [SerializeField] private Transform attackCheck;                                 // 攻击检测点
     [SerializeField] private float attackCheckRadius = 0.8f;                        // 攻击检测半径
-    private Transform closestEnemy;                                                 // 最近敌人
     private int facingDir = 1;                                                      // 方向
 
     private bool canDuplicateClone;                                                 // 是否可以克隆残影
     private float chanceToDuplicate;                                                // 克隆残影概率
 
+    [Space]
+    [SerializeField] private LayerMask whatIsEnemy;
+    [SerializeField] private float closestEnemyCheckRadius = 25;
+    [SerializeField] private Transform closestEnemy;                                // 最近敌人
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        StartCoroutine(FaceClosestTarget());
     }
 
     private void Update()
@@ -89,7 +95,7 @@ public class Clone_Skill_Controller : MonoBehaviour
     }
 
     // 进行克隆体的设置
-    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset, Transform _closestEnemy, 
+    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset,
         bool _canDuplicateClone, float _chanceToDuplicate, Player _player, float _attackMultiplier)
     {
         if (_canAttack)
@@ -97,18 +103,35 @@ public class Clone_Skill_Controller : MonoBehaviour
 
         transform.position = _newTransform.position + _offset;                      // 克隆残影位置
         cloneTimer = _cloneDuration;                                                // 重置克隆残影计时器
-        closestEnemy = _closestEnemy;                                               // 设置最近敌人
         canDuplicateClone = _canDuplicateClone;                                     // 设置是否可以克隆残影
         chanceToDuplicate = _chanceToDuplicate;                                     // 设置克隆残影概率
         player = _player;
         attackMultiplier = _attackMultiplier;
+    }
 
-        FaceClosestTarget();                                                        // 面向最近的敌人
+    // 返回最近敌人的坐标
+    private void FindClosestEnemy()
+    {
+        // 获取附近所有碰撞体
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, closestEnemyCheckRadius, whatIsEnemy);
+        float closestDistance = Mathf.Infinity;                                     // 最近距离，初始值无穷大
+        foreach (Collider2D hit in colliders)
+        {
+            // 如果检测到敌人，获取最近敌人的位置和距离
+            float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
+            if (distanceToEnemy < closestDistance)
+            {
+                closestDistance = distanceToEnemy;
+                closestEnemy = hit.transform;
+            }
+        }
     }
 
     // 面向最近敌人
-    private void FaceClosestTarget()
+    private IEnumerator FaceClosestTarget()
     {
+        yield return null;
+        FindClosestEnemy();
         // 如果最近敌人存在，则面向它
         if(closestEnemy != null)
         {

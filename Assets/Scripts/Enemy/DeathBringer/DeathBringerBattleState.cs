@@ -20,6 +20,8 @@ public class DeathBringerBattleState : EnemyState
         player = PlayerManager.instance.player.transform;                   // 获取玩家坐标
         if (player.GetComponent<PlayerStats>().isDead)
             stateMachine.ChangeState(enemy.idleState);
+
+        stateTimer = enemy.battleTime;
     }
 
     public override void Exit()

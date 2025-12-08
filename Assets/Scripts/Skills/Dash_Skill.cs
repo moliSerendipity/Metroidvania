@@ -12,7 +12,7 @@ public class Dash_Skill : Skill
     [Header("Clone on dash")]
     [SerializeField] private UI_SkillTreeSlot cloneOnDashUnlockButton;              // “冲刺时生成分身”技能槽位
     public bool cloneOnDashUnlocked { get; private set; }
-
+    
     [Header("Clone on arrival")]
     [SerializeField] private UI_SkillTreeSlot cloneOnArrivalUnlockButton;           // “冲刺到达终点时生成分身”技能槽位
     public bool cloneOnArrivalUnlocked { get; private set; }

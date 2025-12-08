@@ -15304,7 +15304,7 @@ MonoBehaviour:
   groundCheck: {fileID: 855529275686111260}
   groundCheckDistance: 1
   wallCheck: {fileID: 1169789824414949526}
-  wallCheckDistance: 0.8
+  wallCheckDistance: 1.5
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
@@ -15314,7 +15314,7 @@ MonoBehaviour:
   stunDuration: 1
   stunDirection: {x: 10, y: 12}
   counterImage: {fileID: 5321571707340836265}
-  moveSpeed: 1.5
+  moveSpeed: 2
   idleTime: 1
   battleTime: 7
   agroDistance: 2
@@ -15429,7 +15429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc244351fe539c48b1fdc00af9cb58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfPossibleDropItems: 3
+  maxItemsToDrop: 0
   possibleDrop:
   - {fileID: 11400000, guid: d04d4eae51880564cbe307f62d6d4cad, type: 2}
   - {fileID: 11400000, guid: 4bb6b85c10425734dbcf79d26af0c008, type: 2}

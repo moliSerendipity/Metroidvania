@@ -20,6 +20,8 @@ public class SlimeBattleState : EnemyState
         player = PlayerManager.instance.player.transform;                   // 获取玩家坐标
         if (player.GetComponent<PlayerStats>().isDead)
             stateMachine.ChangeState(enemy.moveState);
+
+        stateTimer = enemy.battleTime;
     }
 
     public override void Exit()
@@ -48,7 +50,7 @@ public class SlimeBattleState : EnemyState
         else
         {
             // 如果战斗时间结束或距离过大，怪物就进入静止状态
-            if (stateTimer < 0 || Vector2.Distance(player.position, enemy.transform.position) > 15)
+            if (stateTimer < 0 || Vector2.Distance(player.position, enemy.transform.position) > 15 || enemy.IsWallDetected())
             {
                 stateMachine.ChangeState(enemy.idleState);
                 return;

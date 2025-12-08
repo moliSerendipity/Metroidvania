@@ -35,11 +35,11 @@ public class PlayerGroundedState : PlayerState
         }
 
         // 当按下鼠标右键且未丢出剑时，将状态机切换到player.aimSword状态，HasNoSword()可以回收剑
-        if (Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword() && player.skill.sword.swordUnlocked)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword() && player.skill.sword.swordUnlocked && SkillManager.instance.sword.CanUseSkill())
             stateMachine.ChangeState(player.aimSword);
 
         // 当按下Q键时，将状态机切换到player.counterAttack状态
-        if (Input.GetKeyDown(KeyCode.Q) && player.skill.parry.parryUnlocked)
+        if (Input.GetKeyDown(KeyCode.Q) && player.skill.parry.parryUnlocked && SkillManager.instance.parry.CanUseSkill())
             stateMachine.ChangeState(player.counterAttack);
 
         // 当按下鼠标左键时，将状态机切换到player.primaryAttack状态

@@ -5,7 +5,7 @@ using UnityEngine;
 // 怪物死亡后掉落物品的逻辑
 public class ItemDrop : MonoBehaviour
 {
-    [SerializeField] private int amountOfPossibleDropItems;                         // 最大掉落物品数量
+    [SerializeField] private int maxItemsToDrop;                                    // 最大掉落物品数量
     [SerializeField] private ItemData[] possibleDrop;                               // 掉落表（可能掉落的物品）
     private List<ItemData> dropList = new List<ItemData>();                         // 本次实际可掉落的物品池
 
@@ -23,7 +23,7 @@ public class ItemDrop : MonoBehaviour
 
         // 如果有候选物品，则随机挑选 N 个
         if (dropList.Count > 0)
-            for (int i = 0; i < amountOfPossibleDropItems; i++)
+            for (int i = 0; i < maxItemsToDrop; i++)
             {
                 if (dropList.Count <= 0)
                     break;
