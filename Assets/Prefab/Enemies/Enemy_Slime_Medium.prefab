@@ -757,7 +757,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   damage:
-    baseValue: 5
+    baseValue: 20
     modifiers: []
   critChance:
     baseValue: 0
@@ -766,7 +766,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   maxHealth:
-    baseValue: 75
+    baseValue: 150
     modifiers: []
   armor:
     baseValue: 0
@@ -793,7 +793,7 @@ MonoBehaviour:
   ailmentDuration: 4
   currentHealth: 0
   soulsDropAmount:
-    baseValue: 0
+    baseValue: 60
     modifiers: []
   level: 1
   percentageModifier: 0.082

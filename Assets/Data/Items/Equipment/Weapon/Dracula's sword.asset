@@ -16,11 +16,11 @@ MonoBehaviour:
   itemName: Dracula's sword
   icon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemID: 82af1a2ab3274db4292e2a07635bf283
-  dropChance: 0
+  dropChance: 91.8
   equipmentType: 0
   itemEffects:
   - {fileID: 11400000, guid: dfd6029d8b2a53b4bb4f0033c9d9ce90, type: 2}
-  itemCooldown: 0
+  itemCooldown: 5
   itemEffectDescription: 1
   strength: 0
   agility: 0

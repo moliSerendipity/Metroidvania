@@ -15,11 +15,13 @@ MonoBehaviour:
   itemType: 1
   itemName: Rogue's jacket
   icon: {fileID: 957708663, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  itemID: 8c72450395ae1a34c930b16abb7efc73
+  dropChance: 82.9
   equipmentType: 1
   itemEffects:
   - {fileID: 11400000, guid: 5d1eb23a0c001144d93b27564b0f1c0c, type: 2}
-  itemCooldown: 0
+  itemCooldown: 5
+  itemEffectDescription: 
   strength: 0
   agility: 0
   intelligence: 0

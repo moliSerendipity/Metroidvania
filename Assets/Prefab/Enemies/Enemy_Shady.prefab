@@ -200,7 +200,7 @@ MonoBehaviour:
   ailmentDuration: 4
   currentHealth: 0
   soulsDropAmount:
-    baseValue: 0
+    baseValue: 200
     modifiers: []
   level: 1
   percentageModifier: 0.4

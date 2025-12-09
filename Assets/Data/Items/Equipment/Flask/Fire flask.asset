@@ -15,11 +15,13 @@ MonoBehaviour:
   itemType: 1
   itemName: Fire flask
   icon: {fileID: 1073501139, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  itemID: 365b4831ac2cc2a49a46a6e490573163
+  dropChance: 88.6
   equipmentType: 3
   itemEffects:
   - {fileID: 11400000, guid: df31ddce4a3c93a40a70d8be91e13358, type: 2}
-  itemCooldown: 0
+  itemCooldown: 5
+  itemEffectDescription: 
   strength: 0
   agility: 0
   intelligence: 0

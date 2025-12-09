@@ -292,7 +292,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   damage:
-    baseValue: 5
+    baseValue: 40
     modifiers: []
   critChance:
     baseValue: 0
@@ -301,7 +301,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   maxHealth:
-    baseValue: 75
+    baseValue: 250
     modifiers: []
   armor:
     baseValue: 0
@@ -328,7 +328,7 @@ MonoBehaviour:
   ailmentDuration: 4
   currentHealth: 0
   soulsDropAmount:
-    baseValue: 0
+    baseValue: 100
     modifiers: []
   level: 1
   percentageModifier: 0.082
@@ -373,8 +373,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc244351fe539c48b1fdc00af9cb58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemsToDrop: 0
-  possibleDrop: []
+  maxItemsToDrop: 7
+  possibleDrop:
+  - {fileID: 11400000, guid: d04d4eae51880564cbe307f62d6d4cad, type: 2}
   dropPrefab: {fileID: 6179378265483203817, guid: cb86c60bb2289a342830b8cf603c104c, type: 3}
 --- !u!1 &2239919452130165959
 GameObject:

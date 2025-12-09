@@ -15,12 +15,14 @@ MonoBehaviour:
   itemType: 1
   itemName: Ice and Fire
   icon: {fileID: 1398721256, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 7.8
+  itemID: df1dd7d8e2447d742891e40fb63735b2
+  dropChance: 92.3
   equipmentType: 0
   itemEffects:
   - {fileID: 11400000, guid: a474d2a8e53b8b54ea0db8595d7e0924, type: 2}
   - {fileID: 11400000, guid: 34bf779aeb64b7345897edac4221d3b4, type: 2}
-  itemCooldown: 0
+  itemCooldown: 5
+  itemEffectDescription: 
   strength: 0
   agility: 0
   intelligence: 0

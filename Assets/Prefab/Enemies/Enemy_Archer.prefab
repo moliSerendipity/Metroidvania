@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength:
-    baseValue: 0
+    baseValue: 5
     modifiers: []
   agility:
     baseValue: 0
@@ -402,7 +402,7 @@ MonoBehaviour:
     baseValue: 25
     modifiers: []
   critChance:
-    baseValue: 0
+    baseValue: 5
     modifiers: []
   critDamage:
     baseValue: 0
@@ -435,7 +435,7 @@ MonoBehaviour:
   ailmentDuration: 4
   currentHealth: 0
   soulsDropAmount:
-    baseValue: 0
+    baseValue: 200
     modifiers: []
   level: 1
   percentageModifier: 0.143
@@ -480,8 +480,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc244351fe539c48b1fdc00af9cb58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfPossibleDropItems: 0
-  possibleDrop: []
+  maxItemsToDrop: 1
+  possibleDrop:
+  - {fileID: 11400000, guid: df1dd7d8e2447d742891e40fb63735b2, type: 2}
+  - {fileID: 11400000, guid: 784b01baacec383488c08151b1ee2307, type: 2}
   dropPrefab: {fileID: 6179378265483203817, guid: cb86c60bb2289a342830b8cf603c104c, type: 3}
 --- !u!114 &3608035858328808939
 MonoBehaviour:

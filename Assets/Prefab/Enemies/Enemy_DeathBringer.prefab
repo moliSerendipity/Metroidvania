@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength:
-    baseValue: 0
+    baseValue: 20
     modifiers: []
   agility:
     baseValue: 0
@@ -133,10 +133,10 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   damage:
-    baseValue: 75
+    baseValue: 50
     modifiers: []
   critChance:
-    baseValue: 0
+    baseValue: 20
     modifiers: []
   critDamage:
     baseValue: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
   ailmentDuration: 4
   currentHealth: 0
   soulsDropAmount:
-    baseValue: 0
+    baseValue: 700
     modifiers: []
   level: 1
   percentageModifier: 0.4
@@ -214,8 +214,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc244351fe539c48b1fdc00af9cb58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemsToDrop: 0
-  possibleDrop: []
+  maxItemsToDrop: 1
+  possibleDrop:
+  - {fileID: 11400000, guid: 4810f2d626445f4428e820a5452c3d0b, type: 2}
+  - {fileID: 11400000, guid: df1dd7d8e2447d742891e40fb63735b2, type: 2}
+  - {fileID: 11400000, guid: 82af1a2ab3274db4292e2a07635bf283, type: 2}
   dropPrefab: {fileID: 6179378265483203817, guid: cb86c60bb2289a342830b8cf603c104c, type: 3}
 --- !u!114 &3421180202635185817
 MonoBehaviour:
@@ -229,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658dcd14eee39d146bf2413723f1fc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackPower: {x: 7, y: 12}
+  knockbackPower: {x: 4, y: 8}
   knockbackOffset: {x: 0.5, y: 2}
   knockbackDuration: 0.07
   attackCheck: {fileID: 1909123657935931793}

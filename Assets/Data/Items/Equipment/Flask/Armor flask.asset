@@ -15,12 +15,14 @@ MonoBehaviour:
   itemType: 1
   itemName: Armor flask
   icon: {fileID: -165920498, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  itemID: afd69af013ca66446bbe267442b9cc9f
+  dropChance: 86.7
   equipmentType: 3
   itemEffects:
   - {fileID: 11400000, guid: aabe2a5f016271148bb8701f7d961cb9, type: 2}
   - {fileID: 11400000, guid: 737e9f0a23e5b5f41bb041b4119c9a19, type: 2}
   itemCooldown: 15
+  itemEffectDescription: 
   strength: 0
   agility: 0
   intelligence: 0

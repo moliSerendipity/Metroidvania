@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 1
   itemName: Healing flask
   icon: {fileID: -410334530, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  itemID: 4810f2d626445f4428e820a5452c3d0b
+  dropChance: 89.5
   equipmentType: 3
   itemEffects:
   - {fileID: 11400000, guid: 737e9f0a23e5b5f41bb041b4119c9a19, type: 2}

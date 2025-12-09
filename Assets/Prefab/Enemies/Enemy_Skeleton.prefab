@@ -15377,7 +15377,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   damage:
-    baseValue: 10
+    baseValue: 15
     modifiers: []
   critChance:
     baseValue: 0
@@ -15386,7 +15386,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   maxHealth:
-    baseValue: 500
+    baseValue: 100
     modifiers: []
   armor:
     baseValue: 0
@@ -15429,11 +15429,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc244351fe539c48b1fdc00af9cb58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemsToDrop: 0
+  maxItemsToDrop: 5
   possibleDrop:
   - {fileID: 11400000, guid: d04d4eae51880564cbe307f62d6d4cad, type: 2}
   - {fileID: 11400000, guid: 4bb6b85c10425734dbcf79d26af0c008, type: 2}
-  - {fileID: 11400000, guid: 784b01baacec383488c08151b1ee2307, type: 2}
-  - {fileID: 11400000, guid: 71c9333802037be48ac8ee950cd506da, type: 2}
-  - {fileID: 11400000, guid: 428cb845c632ed04283c4221e25b72c2, type: 2}
   dropPrefab: {fileID: 6179378265483203817, guid: cb86c60bb2289a342830b8cf603c104c, type: 3}
