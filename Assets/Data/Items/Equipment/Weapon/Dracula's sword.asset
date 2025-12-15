@@ -21,13 +21,13 @@ MonoBehaviour:
   itemEffects:
   - {fileID: 11400000, guid: dfd6029d8b2a53b4bb4f0033c9d9ce90, type: 2}
   itemCooldown: 5
-  itemEffectDescription: 1
-  strength: 0
+  itemEffectDescription: 
+  strength: 3
   agility: 0
   intelligence: 0
   vitality: 0
   damage: 0
-  critChance: 0
+  critChance: 20
   critDamage: 0
   health: 0
   armor: 0
